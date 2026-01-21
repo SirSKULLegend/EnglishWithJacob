@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="pageTitle">Reading Lesson - EngWithJacob</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/nav_styles.css">
+    <style>
+        /* Reading Specific Styles */
+        .story-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            font-size: 1.25rem;
+            line-height: 2;
+            color: var(--text-main);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.05);
+            position: relative;
+        }
+
+        .story-card::before {
+            content: "📖";
+            position: absolute;
+            top: -20px;
+            right: 2rem;
+            left: auto;
+            font-size: 3rem;
+            background: var(--bg-light);
+            padding: 0.5rem;
+            border-radius: 50%;
+            border: 2px solid var(--bg-card);
+            box-shadow: 0 4px 10px rgba(6, 182, 212, 0.1);
+        }
+
+        .clickable-word {
+            cursor: pointer;
+            border-bottom: 2px dashed var(--cyan-accent);
+            color: var(--cyan-dark);
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        [data-theme="dark"] .clickable-word {
+            color: var(--cyan-accent);
+        }
+
+        .clickable-word:hover {
+            color: var(--cyan-accent);
+            background: var(--bg-light);
+            border-radius: 4px;
+        }
+
+        .definition-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-card);
+            border: 2px solid var(--cyan-accent);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 20px 50px rgba(6, 182, 212, 0.2);
+            z-index: 100;
+            text-align: center;
+        }
+
+        .definition-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .quiz-section {
+            background: var(--bg-light);
+            border: 1px dashed var(--cyan-accent);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-top: 3rem;
+        }
+
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: var(--bg-card);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            text-align: left;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--cyan-accent);
+            background: var(--bg-card);
+            transform: translateX(4px);
+        }
+
+        .quiz-option.selected {
+            background: var(--cyan-accent);
+            color: white;
+            border-color: var(--cyan-accent);
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="bg-gradient"></div> Removed dark gradient -->
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">📚</div>
+                <div class="logo-text">
+                    <h1 data-i18n="logoTitle">EngWithJacob</h1>
+                    <p data-i18n="pageName">Reading Lesson</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="reading.html" class="nav-link nav-skill reading active" data-i18n="navReading">Reading</a>
+                <a href="listening.html" class="nav-link nav-skill listening" data-i18n="navListening">Listening</a>
+                <a href="speaking.html" class="nav-link nav-skill speaking" data-i18n="navSpeaking">Speaking</a>
+                <a href="writing.html" class="nav-link nav-skill writing" data-i18n="navWriting">Writing</a>
+                <div class="nav-separator"></div>
+                <a href="../index.html" class="nav-link" data-i18n="navHome">Home</a>
+                <a href="../pages/leaderboard.html" class="nav-link" data-i18n="navLeaderboard">Leaderboard</a>
+                <a href="../pages/ai-lab.html" class="nav-link" data-i18n="navAILab">AI Lab</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn btn-ghost" onclick="toggleTheme()" title="Toggle Theme" style="font-size: 1.2rem;">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <div class="user-avatar" style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden;">
+                    <a href="../pages/profile.html"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jacob"
+                            width="32" height="32" alt="Profile"></a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="story-card">
+                <h2 style="margin-bottom: 1.5rem; font-size: 2rem; color: var(--cyan-dark);" data-i18n="storyTitle">
+                    The Lost Key</h2>
+                <p id="storyContent">
+                    It was a <span class="clickable-word"
+                        onclick="showDef('Gloomy', 'Dark and depressing')">gloomy</span> Tuesday when Sarah found the
+                    key. She was walking down the <span class="clickable-word"
+                        onclick="showDef('Cobblestone', 'Small round stones used to pave streets')">cobblestone</span>
+                    street, clutching her coat against the <span class="clickable-word"
+                        onclick="showDef('Brisk', 'Quick, energetic, or cold')">brisk</span> wind. Suddenly, a <span
+                        class="clickable-word" onclick="showDef('Glimmer', 'A faint or unsteady light')">glimmer</span>
+                    caught her eye. It was small, golden, and partially buried in the mud. She bent down to <span
+                        class="clickable-word"
+                        onclick="showDef('Retrieve', 'To get or bring something back')">retrieve</span> it...
+                </p>
+            </section>
+
+            <section class="quiz-section">
+                <h3 style="margin-bottom: 1rem; font-size: 1.5rem;" data-i18n="quizTitle">Comprehension Check</h3>
+                <p style="margin-bottom: 1.5rem; color: var(--text-muted);" data-i18n="quizQuestion">What was the
+                    weather
+                    like?</p>
+                <div id="quizOptions">
+                    <button class="quiz-option" onclick="selectOption(this, false)">Sunny and warm</button>
+                    <button class="quiz-option" onclick="selectOption(this, true)">Gloomy and windy</button>
+                    <button class="quiz-option" onclick="selectOption(this, false)">Snowy and cold</button>
+                </div>
+                <p id="quizResult" style="margin-top: 1rem; font-weight: 600; min-height: 1.5rem;"></p>
+            </section>
+        </main>
+
+        <div id="toast" class="definition-toast">
+            <span id="defWord"
+                style="color: var(--cyan-accent); font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem;">Word</span>
+            <span id="defText" style="color: var(--text-muted); font-size: 0.9rem;">Definition text goes here</span>
+        </div>
+    </div>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/player.js"></script>
+    <script>
+        let localState = {};
+        const pageStrings = {
+            en: {
+                pageName: "Reading Lesson",
+                storyTitle: "The Lost Key",
+                quizTitle: "Comprehension Check", quizQuestion: "What was the weather like?",
+                quizCorrect: "Correct! Well done.", quizWrong: "Not quite, try again."
+            },
+            ar: {
+                pageName: "درس القراءة",
+                storyTitle: "المفتاح المفقود",
+                quizTitle: "اختبار الفهم", quizQuestion: "كيف كان الطقس؟",
+                quizCorrect: "صحيح! أحسنت.", quizWrong: "ليس تماماً، حاول مرة أخرى."
+            }
+        };
+
+        function showDef(word, def) {
+            const toast = document.getElementById('toast');
+            document.getElementById('defWord').textContent = word;
+            document.getElementById('defText').textContent = def;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function selectOption(btn, isCorrect) {
+            document.querySelectorAll('.quiz-option').forEach(b => {
+                b.classList.remove('selected');
+                b.style.borderColor = 'transparent';
+                b.style.backgroundColor = 'var(--bg-card)';
+            });
+            btn.classList.add('selected');
+
+            const result = document.getElementById('quizResult');
+            // Reset colors
+            btn.style.backgroundColor = '';
+
+            const currentLang = state.lang || 'en';
+
+            if (isCorrect) {
+                btn.style.borderColor = 'var(--cyan-accent)';
+                btn.style.backgroundColor = 'var(--cyan-accent)';
+                result.textContent = pageStrings[currentLang].quizCorrect;
+                result.style.color = 'var(--cyan-accent)';
+
+                // Reward Logic
+                if (typeof player !== 'undefined' && !player.completed.reading.includes("reading-1")) {
+                    reward({ coins: 50, xp: 20 });
+                    player.completed.reading.push("reading-1");
+                    savePlayer(player);
+                    result.textContent += " (+50 Coins, +20 XP)";
+                }
+            } else {
+                btn.style.borderColor = '#ef4444';
+                btn.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
+                result.textContent = pageStrings[currentLang].quizWrong;
+                result.style.color = '#ef4444';
+            }
+        }
+
+        // Hook into the global updateContent
+        const originalUpdateContent = window.updateContent || function () { };
+        window.updateContent = function () {
+            if (originalUpdateContent) originalUpdateContent();
+
+            const currentLang = state.lang || 'en';
+
+            // Apply standard strings
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (pageStrings[currentLang] && pageStrings[currentLang][key]) {
+                    el.textContent = pageStrings[currentLang][key];
+                }
+            });
+
+            // Specific content updates
+            if (currentLang === 'ar') {
+                document.getElementById('storyContent').innerHTML = `
+                كان يوم ثلاثاء <span class="clickable-word" onclick="showDef('كئيب', 'مظلم ومحبط')">كئيباً</span> عندما وجدت سارة المفتاح. كانت تمشي في الشارع <span class="clickable-word" onclick="showDef('المرصوف', 'حجارة صغيرة لرصف الطرق')">المرصوف</span>، ممسكة بمعطفها ضد الرياح <span class="clickable-word" onclick="showDef('الباردة', 'سريعة وقوية')">الباردة</span>. فجأة، لفت انتباهها <span class="clickable-word" onclick="showDef('بريق', 'ضوء خافت')">بريق</span>. كان صغيراً، ذهبياً، ومدفوناً جزئياً في الطين...
+            `;
+                const opts = document.querySelectorAll('.quiz-option');
+                if (opts.length >= 3) {
+                    opts[0].textContent = "مشمس ودافئ";
+                    opts[1].textContent = "كئيب وعاصف";
+                    opts[2].textContent = "مثلج وبارد";
+                }
+            } else {
+                document.getElementById('storyContent').innerHTML = `
+                It was a <span class="clickable-word" onclick="showDef('Gloomy', 'Dark and depressing')">gloomy</span> Tuesday when Sarah found the key. She was walking down the <span class="clickable-word" onclick="showDef('Cobblestone', 'Small round stones used to pave streets')">cobblestone</span> street, clutching her coat against the <span class="clickable-word" onclick="showDef('Brisk', 'Quick, energetic, or cold')">brisk</span> wind. Suddenly, a <span class="clickable-word" onclick="showDef('Glimmer', 'A faint or unsteady light')">glimmer</span> caught her eye. It was small, golden, and partially buried in the mud. She bent down to <span class="clickable-word" onclick="showDef('Retrieve', 'To get or bring something back')">retrieve</span> it...
+            `;
+                const opts = document.querySelectorAll('.quiz-option');
+                if (opts.length >= 3) {
+                    opts[0].textContent = "Sunny and warm";
+                    opts[1].textContent = "Gloomy and windy";
+                    opts[2].textContent = "Snowy and cold";
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>

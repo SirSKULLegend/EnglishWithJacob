@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - EngWithJacob</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            padding-bottom: 2rem;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--cyan-accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .balance {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(13, 148, 136, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 99px;
+            border: 1px solid var(--cyan-dark);
+            color: var(--cyan-accent);
+            font-weight: 600;
+        }
+
+        .coin-icon {
+            color: var(--gold-accent, #fbbf24);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Section Styles */
+        .shop-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .section-icon {
+            color: var(--cyan-accent);
+        }
+
+        /* Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Product Card */
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan-accent);
+        }
+
+        .popular-tag {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--gold-accent, #d97706);
+            color: white;
+            padding: 0.25rem 3rem;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .product-icon {
+            font-size: 2rem;
+            background: var(--bg-light);
+            padding: 0.75rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .product-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .product-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+
+        /* Features List for Plans */
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem 0;
+            width: 100%;
+        }
+
+        .features-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .features-list li i {
+            color: var(--cyan-accent);
+            width: 16px;
+        }
+
+        /* Tiers Selector */
+        .tiers-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            background: var(--bg-light);
+            padding: 0.25rem;
+            border-radius: 8px;
+        }
+
+        .tier-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .tier-btn.active {
+            background: var(--bg-card);
+            color: var(--cyan-accent);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .price-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            margin-bottom: 1rem;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--cyan-accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .buy-btn:hover {
+            background: var(--cyan-dark);
+        }
+
+        .buy-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--cyan-accent);
+            color: var(--cyan-accent);
+        }
+
+        .buy-btn.secondary:hover {
+            background: rgba(13, 148, 136, 0.1);
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: var(--cyan-accent);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="../index.html" class="logo">
+            <i data-lucide="shopping-bag"></i> Shop
+        </a>
+        <div class="balance">
+            <span class="coin-icon">👑</span> 100 King Coins
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Subscriptions -->
+        <section class="shop-section">
+            <h2 class="section-title"><i data-lucide="crown" class="section-icon"></i> Memberships</h2>
+            <div class="products-grid">
+                <!-- Squire -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <div>
+                            <h3 class="product-name">Squire</h3>
+                            <div class="price-tag"><span>S.R</span> 19<span
+                                    style="font-size:0.8rem; color:var(--text-muted)">/mo</span></div>
+                        </div>
+                        <div class="product-icon" style="font-size:1.5rem;">🛡️</div>
+                    </div>
+                    <ul class="features-list">
+                        <li><i data-lucide="coins"></i> <strong>2,500 King Coins</strong></li>
+                        <li><i data-lucide="graduation-cap"></i> 1 Private Lesson</li>
+                        <li><i data-lucide="users"></i> 1 Group Session</li>
+                        <li><i data-lucide="check"></i> Story Access</li>
+                    </ul>
+                    <button class="buy-btn secondary" onclick="subscribeSquire()">Subscribe</button>
+                </div>
+                <!-- Knight -->
+                <div class="product-card" style="border-color:var(--cyan-accent);">
+                    <div class="popular-tag">BEST VALUE</div>
+                    <div class="product-header">
+                        <div>
+                            <h3 class="product-name">Knight</h3>
+                            <div class="price-tag"><span>S.R</span> 39<span
+                                    style="font-size:0.8rem; color:var(--text-muted)">/mo</span></div>
+                        </div>
+                        <div class="product-icon" style="font-size:1.5rem;">⚔️</div>
+                    </div>
+                    <ul class="features-list">
+                        <li><i data-lucide="coins"></i> <strong>5,000 King Coins</strong></li>
+                        <li><i data-lucide="slash"></i> <strong>No Ads</strong></li>
+                        <li><i data-lucide="graduation-cap"></i> 2 Private Lessons</li>
+                        <li><i data-lucide="users"></i> 3 Group Sessions</li>
+                    </ul>
+                    <button class="buy-btn" onclick="subscribeKnight()">Subscribe</button>
+                </div>
+                <!-- Royal -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <div>
+                            <h3 class="product-name">Royal</h3>
+                            <div class="price-tag"><span>S.R</span> 79<span
+                                    style="font-size:0.8rem; color:var(--text-muted)">/mo</span></div>
+                        </div>
+                        <div class="product-icon" style="font-size:1.5rem;">👑</div>
+                    </div>
+                    <ul class="features-list">
+                        <li><i data-lucide="coins"></i> <strong>7,500 King Coins</strong></li>
+                        <li><i data-lucide="slash"></i> <strong>No Ads</strong></li>
+                        <li><i data-lucide="graduation-cap"></i> 3 Private Lessons</li>
+                        <li><i data-lucide="users"></i> 5 Group Sessions</li>
+                    </ul>
+                    <button class="buy-btn secondary" onclick="subscribeRoyal()">Subscribe</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tutoring Sessions -->
+        <!-- Tutoring Sessions -->
+        <!-- Tutoring Sessions -->
+        <section class="shop-section">
+            <h2 class="section-title"><i data-lucide="graduation-cap" class="section-icon"></i> Tutoring</h2>
+            <div class="products-grid">
+                <!-- Group Sessions (paid) -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3 class="product-name">Group Session</h3>
+                        <div class="product-icon">👥</div>
+                    </div>
+
+                    <p class="product-desc">Small group conversation practice.</p>
+
+                    <div class="tiers-options">
+                        <button class="tier-btn active" onclick="updatePrice(this, 'g-price', 30)">1 Session</button>
+                        <button class="tier-btn" onclick="updatePrice(this, 'g-price', 85)">3 Sessions</button>
+                        <button class="tier-btn" onclick="updatePrice(this, 'g-price', 130)">5 Sessions</button>
+                    </div>
+
+                    <div class="price-tag"><span>S.R</span> <span id="g-price">30</span></div>
+
+                    <!-- new function to handle payment -->
+                    <button class="buy-btn"
+                        onclick="payForTutoring('group', document.getElementById('g-price').innerText)">
+                        Pay & Book
+                    </button>
+                </div>
+
+                <!-- Private Lessons (paid) -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3 class="product-name">Private Lesson</h3>
+                        <div class="product-icon">🎓</div>
+                    </div>
+
+                    <p class="product-desc">1-on-1 personalized instruction.</p>
+
+                    <div class="tiers-options">
+                        <button class="tier-btn active" onclick="updatePrice(this, 'p-price', 19)">1 Session</button>
+                        <button class="tier-btn" onclick="updatePrice(this, 'p-price', 39)">3 Sessions</button>
+                        <button class="tier-btn" onclick="updatePrice(this, 'p-price', 79)">5 Sessions</button>
+                    </div>
+
+                    <div class="price-tag"><span>S.R</span> <span id="p-price">19</span></div>
+
+                    <!-- new function to handle payment -->
+                    <button class="buy-btn"
+                        onclick="payForTutoring('private', document.getElementById('p-price').innerText)">
+                        Pay & Book
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Items -->
+        <section class="shop-section">
+            <h2 class="section-title"><i data-lucide="package" class="section-icon"></i> Items & Titles</h2>
+            <div class="products-grid">
+                <!-- Streak Shield -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3 class="product-name">Streak Shield</h3>
+                        <div class="product-icon">🛡️</div>
+                    </div>
+                    <p class="product-desc">Protect your streak.</p>
+                    <div class="tiers-options">
+                        <button class="tier-btn active" onclick="updatePrice(this, 's-price', 100)">x1</button>
+                        <button class="tier-btn" onclick="updatePrice(this, 's-price', 450)">x5</button>
+                        <button class="tier-btn" onclick="updatePrice(this, 's-price', 800)">x10</button>
+                    </div>
+                    <div class="price-tag"><span class="coin-icon">👑</span> <span id="s-price">100</span></div>
+                    <button class="buy-btn">Purchase</button>
+                </div>
+
+                <!-- Titles -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3 class="product-name">Titles</h3>
+                        <div class="product-icon">🏷️</div>
+                    </div>
+                    <p class="product-desc">Unique flair for your profile.</p>
+                    <select
+                        style="width:100%; padding:0.5rem; background:var(--bg-light); border:1px solid var(--border-color); color:var(--text-main); border-radius:8px; margin-bottom:1rem;"
+                        onchange="document.getElementById('t-price').innerText = this.value">
+                        <option value="500">The Brave (500)</option>
+                        <option value="1000">Word Smith (1000)</option>
+                        <option value="5000">Dragon Slayer (5000)</option>
+                    </select>
+                    <div class="price-tag"><span class="coin-icon">👑</span> <span id="t-price">500</span></div>
+                    <button class="buy-btn">Unlock Title</button>
+                </div>
+            </div>
+        </section>
+
+        <a href="../index.html" class="back-link">← Back to Dashboard</a>
+    </div>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/player.js"></script>
+    <script>
+        lucide.createIcons();
+
+        function updatePrice(btn, id, price) {
+            // Remove active class from siblings
+            const siblings = btn.parentElement.children;
+            for (let i = 0; i < siblings.length; i++) {
+                siblings[i].classList.remove('active');
+            }
+            // Add active to clicked
+            btn.classList.add('active');
+            // Update price
+            document.getElementById(id).innerText = price;
+        }
+
+        // Initialize Player Info
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof player !== 'undefined') {
+                const balanceEl = document.querySelector('.balance');
+                if (balanceEl) {
+                    balanceEl.innerHTML = `<span class="coin-icon">👑</span> ${player.coins} King Coins`;
+                }
+            }
+        });
+
+        // Subscription Logic
+        function subscribeSquire() {
+            if (confirm("Subscribe to Squire?")) {
+                player.tier = "Squire";
+                player.coins += 2500;
+                savePlayer(player);
+                location.reload();
+            }
+        }
+
+        function subscribeKnight() {
+            if (confirm("Subscribe to Knight?")) {
+                player.tier = "Knight";
+                player.coins += 5500;
+                savePlayer(player);
+                location.reload();
+            }
+        }
+
+        function subscribeRoyal() {
+            if (confirm("Subscribe to Royal?")) {
+                player.tier = "Royal";
+                player.coins += 9000;
+                savePlayer(player);
+                location.reload();
+            }
+        }
+
+        /**
+         * Placeholder handler for tutoring payment.
+         * Replace or extend this with Stripe/Apple Pay logic.
+         */
+        function payForTutoring(type, amountStr) {
+            const amount = parseFloat(amountStr);
+            const typeName = type === 'private' ? 'Private Lesson' : 'Group Session';
+
+            // Basic confirmation for now — updated currency logic
+            if (!confirm(`Proceed to payment:\n${typeName}\nAmount: ${amount} S.R\n`)) {
+                return;
+            }
+
+            // TODO: Integrate actual payment flow here (Stripe Checkout, etc.)
+            alert('Payment flow to be implemented.');
+        }
+    </script>
+</body>
+
+</html>

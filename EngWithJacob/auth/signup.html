@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - EngWithJacob</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.1), transparent 50%);
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 480px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--emerald-400);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--emerald-400);
+            background: var(--bg-card);
+            box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--emerald-400);
+            color: #0f172a;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--emerald-300);
+            transform: translateY(-1px);
+        }
+
+        .auth-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .auth-footer a {
+            color: var(--emerald-400);
+            text-decoration: none;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-card">
+        <div class="logo">
+            <h1>Create Account</h1>
+        </div>
+        <form onsubmit="handleSignup(event)">
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="e.g. Amina Ali" required>
+                </div>
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" placeholder="24" required>
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select required>
+                        <option value="" disabled selected>Select...</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group full-width">
+                    <label>Country</label>
+                    <select required>
+                        <option value="" disabled selected>Select...</option>
+                        <option value="Saudi Arabia">Saudi Arabia</option>
+                        <option value="Egypt">Egypt</option>
+                        <option value="UAE">UAE</option>
+                        <option value="Kuwait">Kuwait</option>
+                        <option value="Sudan">Sudan</option>
+                        <option value="Palestine">Palestine</option>
+                        <option value="Syria">Syria</option>
+                        <option value="Jordan">Jordan</option>
+                        <option value="Lebanon">Lebanon</option>
+                        <option value="Iraq">Iraq</option>
+                        <option value="Yemen">Yemen</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group full-width">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="+966 ..." required>
+                </div>
+                <div class="form-group full-width">
+                    <label>Email</label>
+                    <input type="email" placeholder="name@example.com" required>
+                </div>
+                <div class="form-group full-width">
+                    <label>Password</label>
+                    <input type="password" placeholder="Create a password" required>
+                </div>
+            </div>
+            <button type="submit" class="btn-primary">Start Learning</button>
+        </form>
+        <div class="auth-footer">
+            Already have an account? <a href="login.html">Sign In</a>
+        </div>
+    </div>
+
+    <script>
+        function handleSignup(e) {
+            e.preventDefault();
+            // Simulate signup
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>

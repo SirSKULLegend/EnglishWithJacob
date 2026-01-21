@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - EngWithJacob</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/nav_styles.css">
+    <style>
+        /* Profile Layout */
+        .profile-header {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.1);
+        }
+
+        .avatar-container {
+            position: relative;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--cyan-accent);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+        }
+
+        .rank-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--amber-400);
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            border: 3px solid var(--bg-card);
+            cursor: help;
+        }
+
+        .user-info h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .rank-title {
+            color: var(--amber-400);
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .title-tag {
+            background: var(--bg-light);
+            color: var(--page-accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(6, 182, 212, 0.05);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(6, 182, 212, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 8px;
+        }
+
+        .titles-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .title-badge {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .title-badge.unlocked {
+            border-color: var(--cyan-accent);
+            color: var(--cyan-accent);
+            background: var(--bg-light);
+        }
+
+        .logout-btn {
+            margin-top: 2rem;
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-card);
+            color: #ef4444;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #fef2f2;
+        }
+
+        @media(max-width: 640px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 1.5rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(6, 182, 212, 0.2);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .edit-btn {
+            background: transparent;
+            border: none;
+            color: var(--cyan-accent);
+            cursor: pointer;
+            padding: 0.25rem;
+            margin-left: 0.5rem;
+            transition: transform 0.2s;
+        }
+
+        .edit-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .detail-item:hover {
+            border-color: var(--cyan-accent);
+            background: var(--bg-light);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--cyan-accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🧙</div>
+                <div class="logo-text">
+                    <h1>EngWithJacob</h1>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="../skills/reading.html" class="nav-link nav-skill reading" data-i18n="navReading">Reading</a>
+                <a href="../skills/listening.html" class="nav-link nav-skill listening"
+                    data-i18n="navListening">Listening</a>
+                <a href="../skills/speaking.html" class="nav-link nav-skill speaking"
+                    data-i18n="navSpeaking">Speaking</a>
+                <a href="../skills/writing.html" class="nav-link nav-skill writing" data-i18n="navWriting">Writing</a>
+                <div class="nav-separator"></div>
+                <a href="../index.html" class="nav-link" data-i18n="navHome">Home</a>
+                <a href="leaderboard.html" class="nav-link" data-i18n="navLeaderboard">Leaderboard</a>
+                <a href="ai-lab.html" class="nav-link" data-i18n="navAILab">AI Lab</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn btn-ghost" onclick="toggleTheme()" title="Toggle Theme" style="font-size: 1.2rem;">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <div class="user-avatar" style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden;">
+                    <a href="profile.html"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jacob" width="32"
+                            height="32" alt="Profile"></a>
+                </div>
+            </div>
+        </header>
+
+        <div class="profile-header">
+            <div class="avatar-container">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jacob" alt="User Avatar" class="avatar">
+                <div class="rank-badge" title="Current Rank: Prince">👑</div>
+            </div>
+            <div class="user-info">
+                <h1><span id="headerName">Amina Ali</span> <span id="displayFlag" style="font-size: 1rem;">🇸🇦</span>
+                </h1>
+                <p>
+                    <span class="rank-title">💎 Prince of Vocabulary</span>
+                    <span class="title-tag">🏆 100 Word Slayer</span>
+                </p>
+                <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;">Member since 2024</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">🔥 14</div>
+                <div class="stat-label">Day Streak</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">⚡ 2,450</div>
+                <div class="stat-label">Total XP</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">📚 342</div>
+                <div class="stat-label">Words Learned</div>
+            </div>
+        </div>
+
+        <h3 class="section-title">Unlocked Titles</h3>
+        <div class="titles-list">
+            <div class="title-badge unlocked"><span>🏆</span> 100 Word Slayer</div>
+            <div class="title-badge unlocked"><span>🌙</span> Night Owl Learner</div>
+            <div class="title-badge unlocked"><span>🔥</span> 7 Day Streak</div>
+            <div class="title-badge"><span>⚔️</span> Grammar Guardian</div>
+            <div class="title-badge"><span>👑</span> King of Kings</div>
+        </div>
+
+        <h3 class="section-title">Personal Details (Click to Edit)</h3>
+        <div class="details-grid">
+            <div class="form-group">
+                <label>Full Name</label>
+                <div class="detail-item" onclick="openEditModal('name', 'Full Name', 'text')">
+                    <span id="displayName">Amina Ali</span> <button class="edit-btn">✏️</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Age</label>
+                <div class="detail-item" onclick="openEditModal('age', 'Age', 'number')">
+                    <span id="displayAge">24</span> <button class="edit-btn">✏️</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Country</label>
+                <div class="detail-item" onclick="openEditModal('country', 'Country', 'select')">
+                    <span id="displayCountry">Saudi Arabia</span> <button class="edit-btn">✏️</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <div class="detail-item" onclick="openEditModal('phone', 'Phone Number', 'tel')">
+                    <span id="displayPhone">+966501234567</span> <button class="edit-btn">✏️</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <div class="detail-item" onclick="openEditModal('email', 'Email Address', 'email')">
+                    <span id="displayEmail">amina24@example.com</span> <button class="edit-btn">✏️</button>
+                </div>
+            </div>
+        </div>
+
+        <button class="logout-btn" onclick="window.location.href='../login.html'">Sign Out</button>
+        <div style="text-align:center; margin-top:1rem;">
+            <a href="#" onclick="activateAdminMode(); return false;"
+                style="color:var(--text-muted); font-size:0.8rem; text-decoration:none; opacity:0.5;">[Dev Admin]</a>
+        </div>
+
+        <!-- Edit Modal -->
+        <div class="modal-overlay" id="editModal">
+            <div class="modal">
+                <h3 id="modalTitle">Edit Field</h3>
+                <div class="form-group" id="modalInputContainer"></div>
+                <div style="display:flex; gap:1rem;">
+                    <button class="btn" onclick="closeEditModal()">Cancel</button>
+                    <button class="btn btn-primary" style="margin-top:0;" onclick="saveChange()">Update</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let currentField = '';
+            const openEditModal = (fieldId, title, type) => {
+                currentField = fieldId;
+                document.getElementById('modalTitle').textContent = 'Edit ' + title;
+                document.getElementById('editModal').classList.add('active');
+                const container = document.getElementById('modalInputContainer');
+                container.innerHTML = '';
+                const currentValue = document.getElementById('display' + fieldId.charAt(0).toUpperCase() + fieldId.slice(1)).textContent;
+
+                const inputStyle = "width:100%; padding:0.75rem; background:var(--bg-body); color:var(--text-main); border:1px solid var(--border-color); border-radius:8px;";
+
+                if (type === 'select' && fieldId === 'country') {
+                    const select = document.createElement('select');
+                    select.id = 'editInput';
+                    select.className = 'val-input';
+                    select.style.cssText = inputStyle;
+                    const countries = ['Saudi Arabia', 'Egypt', 'UAE', 'Kuwait', 'Sudan', 'Palestine', 'Syria', 'Jordan', 'Lebanon', 'Oman', 'Qatar', 'Bahrain', 'Morocco', 'Tunisia', 'Iraq', 'Yemen', 'Libya'];
+                    countries.forEach(c => {
+                        const opt = document.createElement('option');
+                        opt.value = c; opt.textContent = c;
+                        if (c === currentValue) opt.selected = true;
+                        select.appendChild(opt);
+                    });
+                    container.appendChild(select);
+                } else {
+                    const input = document.createElement('input');
+                    input.type = type; input.id = 'editInput'; input.value = currentValue;
+                    input.style.cssText = inputStyle;
+                    if (type === 'tel') input.placeholder = '+966...';
+                    container.appendChild(input);
+                    input.focus();
+                }
+            };
+            const closeEditModal = () => document.getElementById('editModal').classList.remove('active');
+            const countryFlags = {
+                'Saudi Arabia': '🇸🇦', 'Egypt': '🇪🇬', 'UAE': '🇦🇪', 'Kuwait': '🇰🇼',
+                'Sudan': '🇸🇩', 'Palestine': '🇵🇸', 'Syria': '🇸🇾', 'Jordan': '🇯🇴',
+                'Lebanon': '🇱🇧', 'Oman': '🇴🇲', 'Qatar': '🇶🇦', 'Bahrain': '🇧🇭',
+                'Morocco': '🇲🇦', 'Tunisia': '🇹🇳', 'Iraq': '🇮🇶', 'Yemen': '🇾🇪',
+                'Libya': '🇱🇾'
+            };
+
+            const saveChange = () => {
+                const input = document.getElementById('editInput');
+                let value = input.value;
+                if (currentField === 'phone') value = value.replace(/\s/g, '');
+
+                const displayId = 'display' + currentField.charAt(0).toUpperCase() + currentField.slice(1);
+                const listEl = document.getElementById(displayId);
+                if (listEl) listEl.textContent = value;
+
+                // Sync Header Updates
+                if (currentField === 'name') {
+                    const headerName = document.getElementById('headerName');
+                    if (headerName) headerName.textContent = value;
+                }
+                if (currentField === 'country') {
+                    const flag = countryFlags[value] || '🌍';
+                    const flagEl = document.getElementById('displayFlag');
+                    if (flagEl) flagEl.textContent = flag;
+                }
+
+                closeEditModal();
+            };
+            document.getElementById('editModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('editModal')) closeEditModal();
+            });
+        </script>
+    </div>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/player.js"></script>
+    <script>
+        // Init Player Stats
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof player !== 'undefined') {
+                // Tier Badge
+                const tierMap = {
+                    "Squire": "🛡️",
+                    "Knight": "⚔️",
+                    "Royal": "👑"
+                };
+                const badge = document.querySelector('.rank-badge');
+                if (badge) {
+                    badge.innerHTML = tierMap[player.tier] || "🛡️";
+                    badge.title = "Current Rank: " + player.tier;
+                }
+
+                // Rank Title
+                const rankTitle = document.querySelector('.rank-title');
+                if (rankTitle) rankTitle.innerHTML = `💎 ${player.tier} of Vocabulary`;
+
+                // Stats
+                const stats = document.querySelectorAll('.stat-value');
+                if (stats.length >= 3) {
+                    stats[0].innerText = `🔥 ${player.streak}`;
+                    stats[1].innerText = `⚡ ${player.xp}`;
+                    // We can estimate words learned from XP or store separately. For now, keep mock or bind slightly.
+                    // stats[2].innerText = ...
+                }
+
+                // Titles Unlock Check
+                if (player.completed.reading.length >= 10 && !player.titles.includes("📚 Word Slayer")) {
+                    player.titles.push("📚 Word Slayer");
+                    savePlayer(player);
+                }
+
+                // Render Titles
+                const titlesContainer = document.querySelector('.titles-list');
+                if (titlesContainer && player.titles.length > 0) {
+                    // Clear default mock if we want, or append.
+                    // For this task, let's append unlocked ones if not present
+                    player.titles.forEach(t => {
+                        // Check if already in DOM (mock)
+                        const existing = Array.from(titlesContainer.children).find(c => c.textContent.includes(t.split(' ')[1]));
+                        if (!existing) {
+                            const div = document.createElement('div');
+                            div.className = 'title-badge unlocked';
+                            div.innerHTML = `<span>🏆</span> ${t}`;
+                            titlesContainer.appendChild(div);
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

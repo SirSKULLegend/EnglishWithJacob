@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="pageTitle">Listening Lesson - EngWithJacob</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/nav_styles.css">
+    <style>
+        /* Specific Styles */
+        :root {
+            /* Local accent */
+            --page-accent: #a855f7;
+        }
+
+        .player-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .waveform {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin: 2rem 0;
+        }
+
+        .bar {
+            width: 6px;
+            background: var(--border-color);
+            border-radius: 4px;
+            height: 20%;
+            transition: height 0.2s ease;
+        }
+
+        .player-card.playing .bar {
+            animation: pulse 1s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                height: 20%;
+                background: var(--border-color);
+            }
+
+            50% {
+                height: 100%;
+                background: var(--page-accent);
+            }
+        }
+
+        .play-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--page-accent);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .transcript-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .transcript-line {
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.3s;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .transcript-line.active {
+            background: var(--bg-light);
+            color: var(--text-main);
+            border-left: 3px solid var(--page-accent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon"
+                    style="background: linear-gradient(135deg, var(--page-accent), #c084fc); color: white;">🎧</div>
+                <div class="logo-text">
+                    <h1 data-i18n="logoTitle" style="color: var(--page-accent);">EngWithJacob</h1>
+                    <p data-i18n="pageName">Listening Lab</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="reading.html" class="nav-link nav-skill reading" data-i18n="navReading">Reading</a>
+                <a href="listening.html" class="nav-link nav-skill listening active"
+                    data-i18n="navListening">Listening</a>
+                <a href="speaking.html" class="nav-link nav-skill speaking" data-i18n="navSpeaking">Speaking</a>
+                <a href="writing.html" class="nav-link nav-skill writing" data-i18n="navWriting">Writing</a>
+                <div class="nav-separator"></div>
+                <a href="../index.html" class="nav-link" data-i18n="navHome">Home</a>
+                <a href="../pages/leaderboard.html" class="nav-link" data-i18n="navLeaderboard">Leaderboard</a>
+                <a href="../pages/ai-lab.html" class="nav-link" data-i18n="navAILab">AI Lab</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn btn-ghost" onclick="toggleTheme()" title="Toggle Theme" style="font-size: 1.2rem;">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <div class="user-avatar" style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden;">
+                    <a href="../pages/profile.html"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jacob"
+                            width="32" height="32" alt="Profile"></a>
+                </div>
+            </div>
+        </header>
+
+        <div class="player-card" id="player">
+            <h2 data-i18n="lessonTitle" style="color:var(--text-main);">Episode 1: Airport Arrival</h2>
+            <p style="color: var(--text-muted); margin-top: 0.5rem;" data-i18n="lessonDesc">Listen to the conversation
+                and follow the transcript.</p>
+
+            <div class="waveform">
+                <!-- Simulated bars -->
+                <div class="bar" style="animation-delay: 0.1s"></div>
+                <div class="bar" style="animation-delay: 0.2s"></div>
+                <div class="bar" style="animation-delay: 0.3s"></div>
+                <div class="bar" style="animation-delay: 0.1s"></div>
+                <div class="bar" style="animation-delay: 0.4s"></div>
+                <div class="bar" style="animation-delay: 0.2s"></div>
+                <div class="bar" style="animation-delay: 0.5s"></div>
+                <div class="bar" style="animation-delay: 0.3s"></div>
+                <div class="bar" style="animation-delay: 0.1s"></div>
+                <div class="bar" style="animation-delay: 0.2s"></div>
+            </div>
+
+            <button class="play-btn" onclick="togglePlay()">
+                <span id="playIcon">▶</span>
+            </button>
+        </div>
+
+        <div class="transcript-box" id="transcriptContainer">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/player.js"></script>
+    <script>
+        let localState = { playing: false, currentIndex: 0 };
+
+        // Full Dialogue Data
+        const dialogue = [
+            { role: 'Agent', en: "Good morning! Can I see your passport and ticket, please?", ar: "صباح الخير! هل يمكنني رؤية جواز سفرك وتذكرتك من فضلك؟" },
+            { role: 'Traveler', en: "Here you go. I'm here for a vacation.", ar: "تفضل. أنا هنا في إجازة." },
+            { role: 'Agent', en: "Great. How long will you be staying?", ar: "رائع. كم ستبقى؟" },
+            { role: 'Traveler', en: "Just two weeks. Visiting friends in the city.", ar: "أسبوعين فقط. سأزور أصدقاء في المدينة." },
+            { role: 'Agent', en: "Do you have anything to declare?", ar: "هل لديك أي شيء تود الإفصاح عنه؟" },
+            { role: 'Traveler', en: "No, just my personal items.", ar: "لا، فقط أغراضي الشخصية." },
+            { role: 'Agent', en: "Okay. Welcome to the country. Enjoy your stay!", ar: "حسناً. أهلاً بك في البلاد. استمتع بإقامتك!" },
+            { role: 'Traveler', en: "Thank you very much!", ar: "شكراً جزيلاً لك!" }
+        ];
+
+        const pageStrings = {
+            en: {
+                pageName: "Listening Lab",
+                lessonTitle: "Episode 1: Airport Arrival", lessonDesc: "Listen to the conversation and follow the transcript."
+            },
+            ar: {
+                pageName: "مختبر الاستماع",
+                lessonTitle: "الحلقة 1: الوصول للمطار", lessonDesc: "استمع للمحادثة وتابع النص."
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTranscript();
+            setupVoice();
+        });
+
+        function renderTranscript() {
+            const container = document.getElementById('transcriptContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const currentLang = state.lang || 'en';
+
+            dialogue.forEach((line, index) => {
+                const div = document.createElement('div');
+                div.className = 'transcript-line';
+                div.id = `line-${index}`;
+                // Show localized text
+                const text = currentLang === 'en' ? line.en : line.ar;
+                const role = currentLang === 'en' ? line.role : (line.role === 'Agent' ? 'الموظف' : 'المسافر');
+                div.textContent = `${role}: "${text}"`;
+                div.onclick = () => playSingleLine(index);
+                div.style.cursor = 'pointer';
+                container.appendChild(div);
+            });
+        }
+
+        let synth = window.speechSynthesis;
+        let voices = [];
+
+        function setupVoice() {
+            voices = synth.getVoices();
+            if (voices.length === 0) {
+                synth.onvoiceschanged = () => {
+                    voices = synth.getVoices();
+                };
+            }
+        }
+
+        function togglePlay() {
+            const player = document.getElementById('player');
+            const icon = document.getElementById('playIcon');
+
+            if (localState.playing) {
+                // Stop
+                synth.cancel();
+                localState.playing = false;
+                player.classList.remove('playing');
+                icon.textContent = "▶";
+                document.querySelectorAll('.transcript-line').forEach(l => l.classList.remove('active'));
+            } else {
+                // Start
+                localState.playing = true;
+                player.classList.add('playing');
+                icon.textContent = "⏸";
+                playDialogue(localState.currentIndex);
+            }
+        }
+
+        function playDialogue(index) {
+            if (!localState.playing) return;
+            if (index >= dialogue.length) {
+                // End of conversation
+                localState.playing = false;
+                localState.currentIndex = 0;
+                document.getElementById('player').classList.remove('playing');
+                document.getElementById('playIcon').textContent = "▶";
+
+                // Reward Logic
+                if (typeof player !== 'undefined' && !player.completed.listening.includes("listening-1")) {
+                    reward({ coins: 40, xp: 15 });
+                    player.completed.listening.push("listening-1");
+                    savePlayer(player);
+                    alert("Complete! +40 Coins, +15 XP");
+                }
+                return;
+            }
+
+            localState.currentIndex = index;
+
+            // Highlight
+            document.querySelectorAll('.transcript-line').forEach(l => l.classList.remove('active'));
+            const activeLine = document.getElementById(`line-${index}`);
+            if (activeLine) {
+                activeLine.classList.add('active');
+                activeLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            // Speak (Always English)
+            const text = dialogue[index].en;
+            const utterThis = new SpeechSynthesisUtterance(text);
+            utterThis.lang = 'en-US';
+            utterThis.rate = 0.9;
+
+            utterThis.onend = () => {
+                if (localState.playing) {
+                    playDialogue(index + 1);
+                }
+            };
+
+            utterThis.onerror = (event) => {
+                console.error('SpeechSynthesis error', event);
+                localState.playing = false;
+            };
+
+            synth.speak(utterThis);
+        }
+
+        function playSingleLine(index) {
+            // Stop current playback
+            synth.cancel();
+            localState.playing = true;
+            document.getElementById('player').classList.add('playing');
+            document.getElementById('playIcon').textContent = "⏸";
+            playDialogue(index);
+        }
+
+        // Hook into the global updateContent to apply local translations too
+        const originalUpdateContent = window.updateContent || function () { };
+        window.updateContent = function () {
+            if (originalUpdateContent) originalUpdateContent();
+            // Apply local strings
+            const currentLang = state.lang || 'en'; // state comes from app.js
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (pageStrings[currentLang] && pageStrings[currentLang][key]) {
+                    el.textContent = pageStrings[currentLang][key];
+                }
+            });
+            renderTranscript(); // Re-render transcript in new language
+        };
+    </script>
+</body>
+
+</html>

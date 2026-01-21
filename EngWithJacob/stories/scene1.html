@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Act I: The Gate - Silver Kingdom</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root {
+            /* Default Parchment Theme */
+            --paper-bg: #f3e9d2;
+            --paper-border: #c8b085;
+            --ink-dark: #2c1810;
+            --ink-light: #5d4037;
+            --amber-accent: #b45309;
+            --gold-accent: #d97706;
+            --overlay-paper: rgba(255, 252, 240, 0.95);
+            --bg-element: #ffffff;
+        }
+
+        /* Dark Mode Overrides for Story */
+        [data-theme="dark"] {
+            --paper-bg: #1e1b16;
+            --paper-border: #4d4030;
+            --ink-dark: #e5dcc5;
+            --ink-light: #a89f91;
+            --amber-accent: #fbbf24;
+            --gold-accent: #d97706;
+            --overlay-paper: rgba(30, 27, 22, 0.95);
+            --bg-element: #2c2520;
+        }
+
+        /* Ensure body takes the background color variable */
+        body {
+            background-color: var(--paper-bg);
+            /* ... preserve pattern if possible, or override */
+        }
+    </style>
+    <style>
+        /* ... existing styles ... */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--paper-bg);
+            /* background-image: ... we can keep or remove, maybe simplistic for now */
+            color: var(--ink-dark);
+            font-family: 'Merriweather', serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .game-frame {
+            width: 100%;
+            max-width: 900px;
+            background: var(--overlay-paper);
+            border: 4px double var(--paper-border);
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: 600px;
+            position: relative;
+        }
+
+        /* ... corners ... */
+        .corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--amber-accent);
+            z-index: 10;
+        }
+
+        /* ... tl, tr, bl, br ... */
+        .tl {
+            top: 8px;
+            left: 8px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .tr {
+            top: 8px;
+            right: 8px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .bl {
+            bottom: 8px;
+            left: 8px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .br {
+            bottom: 8px;
+            right: 8px;
+            border-left: none;
+            border-top: none;
+        }
+
+        header {
+            text-align: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--paper-border);
+            background: rgba(180, 83, 9, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--amber-accent);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .scene-stage {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .character-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .avatar-frame {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--paper-border);
+            overflow: hidden;
+            background: var(--ink-dark);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .dialogue-box {
+            background: var(--bg-element);
+            border: 1px solid var(--paper-border);
+            padding: 1.5rem;
+            border-radius: 8px;
+            max-width: 600px;
+            text-align: center;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-style: italic;
+            position: relative;
+            color: var(--ink-dark);
+        }
+
+        .dialogue-box::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid var(--paper-border);
+        }
+
+        .narrative-text {
+            color: var(--ink-light);
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .player-action-area {
+            border-top: 1px solid var(--paper-border);
+            padding: 2rem;
+            background: rgba(125, 125, 125, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .input-group {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            gap: 0.5rem;
+        }
+
+        input {
+            flex: 1;
+            padding: 1rem;
+            background: var(--bg-element);
+            border: 2px solid var(--paper-border);
+            border-radius: 4px;
+            font-family: 'Merriweather', serif;
+            font-size: 1rem;
+            color: var(--ink-dark);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--amber-accent);
+        }
+
+        button {
+            padding: 0 2rem;
+            background: var(--ink-dark);
+            color: var(--paper-bg);
+            border: none;
+            border-radius: 4px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: var(--amber-accent);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-frame">
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+
+        <header>
+            <a href="../story-map.html" style="text-decoration:none; color:var(--ink-light); font-weight:700;">← Map</a>
+            <h1>Silver Kingdom</h1>
+            <button class="btn btn-ghost" onclick="toggleTheme()" title="Toggle Theme"
+                style="background:transparent; border:none; color:var(--ink-dark); font-size:1.2rem; padding:0; height:auto;">
+                <span id="themeIcon">🌙</span>
+            </button>
+        </header>
+
+        <div class="scene-stage" id="stage">
+            <p class="narrative-text" id="narrative">
+                The dust of the road clings to your cloak. Ahead, the heavy wooden gates of Amberreach Outpost stand
+                shut. A guard watches you from the wall.
+            </p>
+
+            <div class="character-card" id="npcContainer">
+                <div class="avatar-frame">
+                    <!-- Placeholder for Gatewarden -->
+                    <div
+                        style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#4a3b32; color:#d97706; font-size:3rem;">
+                        🛡️</div>
+                </div>
+                <h3 style="font-family:'Cinzel', serif; font-size:1.1rem;">Gatewarden</h3>
+                <div class="dialogue-box" id="npcDialogue">
+                    "Halt! Who approaches the Silver Gates?"
+                </div>
+            </div>
+        </div>
+
+        <div class="player-action-area">
+            <p id="hint" style="font-size: 0.9rem; color: var(--amber-accent); display:none;">Hint: Introduce yourself
+                clearly.</p>
+            <div class="input-group">
+                <input type="text" id="playerInput" placeholder="Speak your answer..." autocomplete="off">
+                <button onclick="handleAction()">Speak</button>
+            </div>
+            <button onclick="toggleVoice()"
+                style="background:transparent; color:var(--ink-light); font-size:0.8rem; margin-top:0.5rem; border:1px solid var(--paper-border); padding:0.25rem 1rem;">
+                Toggle Voice (On)
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const state = {
+            step: 0,
+            voiceEnabled: true
+        };
+
+        const steps = [
+            {
+                // Step 0: Initial Challenge
+                npc: "Halt! Who approaches the Silver Gates?",
+                keywords: ["i am", "my name", "traveler", "visitor", "me"],
+                nextSuccess: 1,
+                nextFail: 0,
+                failResponse: "Speak up! I need a name or a title. Who are you?"
+            },
+            {
+                // Step 1: Purpose
+                npc: "A traveler, eh? The Kingdom is closed to idle wanderers. Why have you come?",
+                keywords: ["visit", "learn", "english", "trade", "search", "looking", "friend"],
+                nextSuccess: 2,
+                nextFail: 1,
+                failResponse: "That is not reason enough. State your business clearly."
+            },
+            {
+                // Step 2: Permission
+                npc: "Hmm. You seem harmless enough. But do you swear to abide by King Edric's laws?",
+                keywords: ["yes", "swear", "promise", "i do", "agree"],
+                nextSuccess: 3,
+                nextFail: 2,
+                failResponse: "I need a promise. Do you swear?"
+            },
+            {
+                // Step 3: Success
+                npc: "Very well. Open the gates! Welcome to Silver Kingdom, traveler.",
+                keywords: [],
+                isEnd: true
+            }
+        ];
+
+        function handleAction() {
+            const input = document.getElementById('playerInput');
+            const userText = input.value.trim().toLowerCase();
+            if (!userText) return;
+
+            // Logic
+            const currentScene = steps[state.step];
+
+            // EDGE CASE FIX: If keywords empty (auto-success logic for safety)
+            if (!currentScene.keywords || currentScene.keywords.length === 0) {
+                if (currentScene.nextSuccess !== undefined) {
+                    state.step = currentScene.nextSuccess;
+                    updateScene();
+                }
+                return;
+            }
+
+            // Check keywords
+            const success = currentScene.keywords.some(k => userText.includes(k));
+
+            if (success) {
+                state.step = currentScene.nextSuccess;
+                updateScene();
+            } else {
+                updateDialogue(currentScene.failResponse);
+                document.getElementById('hint').style.display = 'block';
+            }
+
+            input.value = '';
+        }
+
+        function updateScene() {
+            const scene = steps[state.step];
+            document.getElementById('hint').style.display = 'none';
+
+            if (scene.isEnd) {
+                // End Scene
+                updateDialogue(scene.npc);
+                document.querySelector('.input-group').innerHTML = '<button onclick="window.location.href=\'scene2.html\'" style="width:100%">Enter the City (Meet King Edric)</button>';
+            } else {
+                updateDialogue(scene.npc);
+            }
+        }
+
+        function updateDialogue(text) {
+            const box = document.getElementById('npcDialogue');
+            box.style.opacity = '0';
+            setTimeout(() => {
+                box.textContent = text;
+                box.style.opacity = '1';
+                if (state.voiceEnabled) speak(text);
+            }, 300);
+        }
+
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.9;
+            utterance.pitch = 0.8; // Deeper for Guard
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function toggleVoice() {
+            state.voiceEnabled = !state.voiceEnabled;
+        }
+
+        // Init
+        document.getElementById('playerInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleAction();
+        });
+
+        // Initial Speak delay
+        setTimeout(() => {
+            if (state.voiceEnabled) speak(steps[0].npc);
+        }, 1000);
+
+    </script>
+    <script src="../js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EngWithJacob</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Link to global styles for dark mode variables -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.1), transparent 50%);
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--cyan-accent);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--cyan-accent);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--cyan-accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--cyan-dark);
+        }
+
+        .auth-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .auth-footer a {
+            color: var(--cyan-accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-card">
+        <div class="logo">
+            <span class="logo-icon">🧙</span>
+            <h1>EngWithJacob</h1>
+        </div>
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-primary">Sign In</button>
+        </form>
+        <div class="auth-footer">
+            Don't have an account? <a href="#">Create Account</a>
+        </div>
+    </div>
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            window.location.href = '../index.html'; // Adjusted path since this is likely in auth/ folder
+        }
+    </script>
+</body>
+
+</html>

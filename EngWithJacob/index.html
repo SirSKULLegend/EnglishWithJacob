@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="EngWithJacob - AI-powered English learning platform with live tutoring, gamified missions, and dynamic lessons" />
+    <title data-i18n="pageTitle">EngWithJacob - Learn English with AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/nav_styles.css">
+    <style>
+        /* Home Page Specific Polish */
+        body {
+            background-color: var(--bg-body);
+            background-image: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.15), transparent 60%);
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Hero Cards */
+        .hero-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, border-color 0.3s;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan-accent);
+        }
+
+        /* Campaign Card Specifics */
+        .campaign-card {
+            background: linear-gradient(135deg, var(--campaign-overlay) 0%, var(--campaign-overlay) 100%), url('assets/silver_kingdom_bg.jpg');
+            background-size: cover;
+            border: 1px solid var(--campaign-title-color);
+        }
+
+        .mission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .mission-title {
+            color: var(--campaign-title-color);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .mission-name {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--campaign-text-main);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            line-height: 1.1;
+        }
+
+        .progress-container {
+            margin-top: 2rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            color: var(--slate-300);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-track {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--campaign-title-color);
+            border-radius: 99px;
+            width: 0%;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Stats Card */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .stat-item {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0.5rem 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Graph Bars */
+        .activity-graph {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 120px;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .graph-bar {
+            width: 12%;
+            background: var(--cyan-accent);
+            border-radius: 6px 6px 0 0;
+            opacity: 0.7;
+            transition: height 1s ease, opacity 0.3s;
+        }
+
+        .graph-bar:hover {
+            opacity: 1;
+        }
+
+        /* Quick Actions Grid */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .action-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: transparent;
+            transition: background 0.3s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: var(--border-color);
+        }
+
+        .action-card:hover::before {
+            background: var(--cyan-accent);
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: var(--bg-light);
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .action-card:hover .action-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .action-title {
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .action-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        .main-footer {
+            margin-top: 5rem;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--cyan-accent);
+        }
+
+        /* Pulse Animation for CTA */
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(251, 191, 36, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(251, 191, 36, 0);
+            }
+        }
+
+        .btn-cta {
+            background: var(--gold-accent, #fbbf24);
+            color: #1e1e1e;
+            font-weight: 800;
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+            animation: pulse-glow 3s infinite;
+        }
+
+        .btn-cta:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🧙</div>
+                <div class="logo-text">
+                    <h1 data-i18n="logoTitle">EngWithJacob</h1>
+                </div>
+            </div>
+
+            <!-- Navigation Bar -->
+            <nav class="main-nav">
+                <!-- Skills Group -->
+                <a href="skills/reading.html" class="nav-link nav-skill reading" data-i18n="navReading">Reading</a>
+                <a href="skills/listening.html" class="nav-link nav-skill listening"
+                    data-i18n="navListening">Listening</a>
+                <a href="skills/speaking.html" class="nav-link nav-skill speaking" data-i18n="navSpeaking">Speaking</a>
+                <a href="skills/writing.html" class="nav-link nav-skill writing" data-i18n="navWriting">Writing</a>
+
+                <div class="nav-separator"></div>
+
+                <!-- Secondary Nav -->
+                <a href="index.html" class="nav-link active" data-i18n="navHome">Home</a>
+                <a href="pages/leaderboard.html" class="nav-link" data-i18n="navLeaderboard">Leaderboard</a>
+                <a href="pages/ai-lab.html" class="nav-link" data-i18n="navAILab">AI Lab</a>
+            </nav>
+
+            <div class="header-actions">
+
+                <button class="btn btn-ghost" onclick="toggleTheme()" title="Toggle Theme">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <button class="btn btn-secondary" onclick="toggleLanguage()">
+                    <span id="langToggle">العربية</span>
+                </button>
+                <a href="pages/profile.html" class="profile-link">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jacob" alt="Profile"
+                        class="header-avatar">
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard-grid">
+            <!-- Left Column: Activity & Stats -->
+            <div class="hero-card">
+                <h2 style="font-family:'Cinzel', serif; margin-bottom:1.5rem; color:var(--text-main);"
+                    data-i18n="pgrTitle">Your Activity</h2>
+
+                <!-- Animated Graph -->
+                <div class="activity-graph">
+                    <div class="graph-bar" style="height:30%; animation-delay:0.1s;"></div>
+                    <div class="graph-bar" style="height:55%; animation-delay:0.2s;"></div>
+                    <div class="graph-bar" style="height:45%; animation-delay:0.3s;"></div>
+                    <div class="graph-bar" style="height:70%; animation-delay:0.4s;"></div>
+                    <div class="graph-bar" style="height:40%; animation-delay:0.5s;"></div>
+                    <div class="graph-bar"
+                        style="height:85%; background:var(--gold-accent, #fbbf24); opacity:1; animation-delay:0.6s;">
+                    </div>
+                    <div class="graph-bar" style="height:60%; animation-delay:0.7s;"></div>
+                </div>
+
+                <div class="stats-overview">
+                    <div class="stat-item">
+                        <div class="stat-value">🔥 12</div>
+                        <div class="stat-label" data-i18n="statStreak">Day Streak</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">⚡ 1,450</div>
+                        <div class="stat-label" data-i18n="statXP">Total XP</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Campaign Hero -->
+            <div class="hero-card campaign-card">
+                <div class="mission-header">
+                    <div>
+                        <div class="mission-title">Continued Journey</div>
+                        <div class="mission-name">Silver Kingdom</div>
+                        <p style="color:var(--campaign-text-sub); margin-top:0.5rem; font-size:0.95rem;">
+                            The path to the capital is fraught with peril. Master the past tense to survive.
+                        </p>
+                    </div>
+                    <div style="font-size:3rem; filter:drop-shadow(0 0 10px rgba(251,191,36,0.5));">🏰</div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span style="color:var(--campaign-text-sub)">Campaign Completion</span>
+                        <span id="campaignPercent" style="color:var(--campaign-title-color); font-weight:700;">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="campaignFill"></div>
+                    </div>
+                </div>
+
+                <div style="margin-top:2.5rem;">
+                    <button class="btn-cta" onclick="window.location.href='story-map.html'">
+                        Continue Adventure
+                    </button>
+                    <!-- <div style="text-align:center; margin-top:1rem; color:rgba(255,255,255,0.6); font-size:0.8rem;">
+                        Next Chapter: The Ambush
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Grid -->
+        <h2 class="section-title" style="margin-top:4rem; margin-bottom:1.5rem; text-align:center; position:relative;"
+            data-i18n="quickActions">
+            Daily Quests & Tools
+        </h2>
+
+        <div class="quick-actions">
+            <!-- Writing -->
+            <div class="action-card" onclick="window.location.href='skills/writing.html'">
+                <div class="action-icon" style="color:#ef4444;">✍️</div>
+                <h3 class="action-title" data-i18n="actWrite">Writing Lab</h3>
+                <p class="action-desc">Practice essays and get AI feedback.</p>
+            </div>
+
+            <!-- Reading -->
+            <div class="action-card" onclick="window.location.href='skills/reading.html'">
+                <div class="action-icon" style="color:#22c55e;">📚</div>
+                <h3 class="action-title" data-i18n="actRead">Daily Reading</h3>
+                <p class="action-desc">Immersive stories with instant definitions.</p>
+            </div>
+
+            <!-- AI Lab -->
+            <div class="action-card" onclick="window.location.href='pages/ai-lab.html'">
+                <div class="action-icon" style="color:#8b5cf6;">🤖</div>
+                <h3 class="action-title" data-i18n="actAI">AI Lab</h3>
+                <p class="action-desc">Explore experimental language tools.</p>
+            </div>
+
+            <!-- Shop -->
+            <div class="action-card" onclick="window.location.href='pages/store.html'">
+                <div class="action-icon" style="color:#f59e0b;">🛍️</div>
+                <h3 class="action-title">Shop</h3>
+                <p class="action-desc">Spend your King Coins on upgrades.</p>
+            </div>
+
+            <!-- Profile -->
+            <div class="action-card" onclick="window.location.href='pages/profile.html'">
+                <div class="action-icon" style="color:#06b6d4;">👤</div>
+                <h3 class="action-title" data-i18n="actProfile">Profile</h3>
+                <p class="action-desc">View your badges and achievements.</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-links">
+                <a href="#" class="footer-link">About Us</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact Support</a>
+                <a href="#" onclick="activateAdminMode(); return false;" class="footer-link"
+                    style="color:var(--cyan-accent); opacity:0.7;">[Admin]</a>
+            </div>
+            <p>&copy; 2026 EngWithJacob. All rights reserved.</p>
+            <p style="font-size:0.8rem; margin-top:0.5rem; opacity:0.5;">Made with 🧙‍♂️ Magic and ☕ Code.</p>
+        </footer>
+
+    </div>
+
+    <!-- Onboarding Modal (Preserved) -->
+    <div class="modal-overlay" id="onboardingModal">
+        <div class="modal">
+            <h3 id="onboardingTitle">Welcome to EngWithJacob! 👋</h3>
+            <p id="onboardingContent">Meet Jacob, your AI tutor. Plan your learning path, complete missions, and track
+                your progress as you journey from beginner to Language Legend.</p>
+            <div class="modal-footer">
+                <div class="step-indicator">
+                    <span id="currentStep">1</span> / <span id="totalSteps">3</span>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-ghost" onclick="closeOnboarding()" data-i18n="skip">Skip</button>
+                    <button class="btn btn-secondary" onclick="prevOnboardingStep()" id="prevBtn"
+                        data-i18n="back">Back</button>
+                    <button class="btn btn-primary" onclick="nextOnboardingStep()" data-i18n="next">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/i18n.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/player.js"></script>
+
+    <!-- Inline Script for Progress Animation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Player Stats Binding
+            if (typeof player !== 'undefined') {
+                document.querySelectorAll('.stat-item .stat-value').forEach(el => {
+                    if (el.nextElementSibling.getAttribute('data-i18n') === "statStreak") {
+                        el.innerText = `🔥 ${player.streak}`;
+                    }
+                    if (el.nextElementSibling.getAttribute('data-i18n') === "statXP") {
+                        el.innerText = `⚡ ${player.xp}`;
+                    }
+                });
+            }
+
+            // Update Campaign Progress
+            const progress = parseInt(localStorage.getItem('silverKingdom_progress')) || 1;
+            const totalChapters = 15;
+            const percent = Math.round(((progress - 1) / totalChapters) * 100);
+
+            const fill = document.getElementById('campaignFill');
+            const text = document.getElementById('campaignPercent');
+
+            // Slight delay for animation
+            setTimeout(() => {
+                if (fill) fill.style.width = percent + '%';
+            }, 500);
+
+            if (text) text.textContent = percent + '%';
+
+            // Randomize Graph Bars slightly for effect
+            document.querySelectorAll('.graph-bar').forEach(bar => {
+                const height = parseInt(bar.style.height);
+                const random = Math.floor(Math.random() * 20) - 10;
+                // bar.style.height = (height + random) + '%';
+            });
+        });
+    </script>
+
+    <!-- Secret Dev Button (Invisible) -->
+    <div onclick="window.location.href='pages/character_notes.html'" id="secretAdminBtn"
+        style="position: fixed; bottom: 0; right: 0; width: 50px; height: 50px; z-index: 9999; cursor: default; opacity: 0;"
+        title="">
+    </div>
+</body>
+
+</html>

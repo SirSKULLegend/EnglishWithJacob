@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Map - Silver Kingdom</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Story Map Specifics */
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        header {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem 0 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        /* Override global header flex if needed */
+        @media (min-width: 1025px) {
+            html[dir="rtl"] header {
+                flex-direction: column;
+            }
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            text-decoration: none;
+            color: var(--cyan-dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            padding: 0.5rem 1rem;
+            border-radius: 99px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--bg-light);
+            border-color: var(--cyan-accent);
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--cyan-dark);
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--cyan-accent);
+            font-size: 1.1rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--border-color);
+            transform: translateX(-50%);
+            opacity: 0.5;
+            border-radius: 99px;
+        }
+
+        .chapter-node {
+            position: relative;
+            margin: 3rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .chapter-node:nth-child(even) .chapter-card {
+            grid-column: 2;
+        }
+
+        .chapter-node::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 18px;
+            height: 18px;
+            background: var(--bg-card);
+            border: 4px solid var(--cyan-accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            transition: all 0.3s;
+            box-shadow: 0 0 0 4px var(--bg-light);
+        }
+
+        .chapter-node:hover::after {
+            background: var(--cyan-accent);
+            box-shadow: 0 0 15px var(--cyan-accent);
+        }
+
+        /* Connector Lines */
+        .chapter-node:nth-child(odd) .chapter-card::before {
+            content: '';
+            position: absolute;
+            right: -4rem;
+            top: 50%;
+            width: 4rem;
+            height: 2px;
+            background: var(--border-color);
+        }
+
+        .chapter-node:nth-child(even) .chapter-card::before {
+            content: '';
+            position: absolute;
+            left: -4rem;
+            top: 50%;
+            width: 4rem;
+            height: 2px;
+            background: var(--border-color);
+        }
+
+        .chapter-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .chapter-card:not(.locked):hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan-accent);
+            box-shadow: 0 20px 30px -5px rgba(6, 182, 212, 0.15);
+        }
+
+        .chapter-card.locked {
+            filter: grayscale(1);
+            opacity: 0.6;
+            background: var(--bg-body);
+            border-style: dashed;
+            cursor: not-allowed;
+        }
+
+        .chapter-card.current {
+            border: 2px solid var(--cyan-accent);
+            background: var(--bg-light);
+        }
+
+        .current-indicator {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--bg-card);
+            color: var(--cyan-accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 1px solid var(--cyan-accent);
+            display: none;
+        }
+
+        .chapter-card.current .current-indicator {
+            display: block;
+        }
+
+        .chapter-number {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: var(--cyan-accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .chapter-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .chapter-focus {
+            display: inline-block;
+            font-size: 0.85rem;
+            color: var(--cyan-dark);
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--bg-glass);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .chapter-card.locked .lock-overlay {
+            display: flex;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+
+            .chapter-node {
+                grid-template-columns: 1fr;
+                padding-left: 3rem;
+                gap: 1rem;
+                margin: 2rem 0;
+            }
+
+            .chapter-node::after {
+                left: 20px;
+            }
+
+            .chapter-node:nth-child(even) .chapter-card {
+                grid-column: 1;
+            }
+
+            .chapter-node:nth-child(odd) .chapter-card::before,
+            .chapter-node:nth-child(even) .chapter-card::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-btn">← Back to Dashboard</a>
+
+            <button class="btn btn-ghost" onclick="toggleTheme()" title="Toggle Theme"
+                style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 50%; cursor: pointer;">
+                <span id="themeIcon">🌙</span>
+            </button>
+
+            <h1>Silver Kingdom</h1>
+            <p class="subtitle">Complete Chapters to Unlock the Destiny</p>
+        </header>
+
+        <div class="timeline" id="timelineContainer">
+            <!-- Chapters generated by JS -->
+        </div>
+    </div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/player.js"></script>
+    <script>
+        // Story Map Logic
+        const chapters = [
+            { id: 0, title: "Prologue: The Golden Days", desc: "King Edric remembers his lost love, Queen Elara.", focus: "Past Simple", type: "edric", link: "stories/prologue.html" },
+            { id: 1, title: "The Light That Fades", desc: "Lyria lies ill in a hidden cabin. The pendant pulses with ancient power.", focus: "Questions • Describing Feelings", type: "lyria", link: "stories/scene3.html" },
+            { id: 2, title: "Shadows on the Road", desc: "King Edric faces the initial attack.", focus: "Commands • Defense", type: "edric", link: "stories/chapter2-edric.html" },
+            { id: 3, title: "The Bandit's Demand", desc: "Lyria is cornered by the bandit Grenn.", focus: "Refusals • Power", type: "lyria", link: "stories/scene4.html" },
+            { id: 4, title: "Whispers in the Pines", desc: "The aftermath of Lyria's power. Eva gives her Amaria's charm.", focus: "Apologies • Regret", type: "lyria", link: "stories/chapter4.html" },
+            { id: 5, title: "The Mirror's Truth", desc: "Marwen's deception deepens. The decoy princess sleeps.", focus: "Subtext • Politeness vs Danger", type: "marwen", link: "stories/scene5.html" },
+            { id: 6, title: "Moonbrook's Gate", desc: "Lyria reaches the ancient forest.", focus: "Requests • Sanctuary", type: "lyria", link: "stories/chapter6.html" },
+            { id: 7, title: "The Wolf's Trail", desc: "Kaelorin tracks the source.", focus: "Directions • Investigation", type: "convergence", link: "stories/construction.html" },
+            { id: 8, title: "Queen Lyric's Decree", desc: "A decision is made to send aid.", focus: "Formal Requests", type: "convergence", link: "stories/construction.html" },
+            { id: 9, title: "The Rotting Roots", desc: "Seryna discovers corruption.", focus: "Describing Decay", type: "marwen", link: "stories/construction.html" },
+            { id: 10, title: "Steel and Silver", desc: "Edric trains his men.", focus: "Imperatives", type: "edric", link: "stories/construction.html" },
+            { id: 11, title: "The Crossing", desc: "Lyria must cross the Great River.", focus: "Prepositions", type: "lyria", link: "stories/construction.html" },
+            { id: 12, title: "A Tavern in the Mist", desc: "A brief respite turns dangerous.", focus: "Ordering Food", type: "convergence", link: "stories/construction.html" },
+            { id: 13, title: "The Betrayal", desc: "A trusted advisor is revealed.", focus: "Accusations", type: "edric", link: "stories/construction.html" },
+            { id: 14, title: "Night of Fire", desc: "Marwen launches an attack.", focus: "Emergency", type: "marwen", link: "stories/construction.html" },
+            { id: 15, title: "The Ancient Oath", desc: "Naerya remembers the oath.", focus: "Promises", type: "convergence", link: "stories/construction.html" },
+            { id: 16, title: "The First Union", desc: "Chaos descends.", focus: "Introductions", type: "convergence", link: "stories/construction.html" }
+        ];
+
+        function getProgress() { return parseInt(localStorage.getItem('silverKingdom_progress')) || 1; }
+
+        function renderMap() {
+            const container = document.getElementById('timelineContainer');
+
+            container.innerHTML = chapters.map((chap) => {
+                let isLocked = true;
+
+                if (typeof player !== 'undefined') {
+                    // Access List Logic: If ID is in list, it is unlocked.
+                    // Special case: Chapter 0 is typically free/unlocked.
+                    if (chap.id === 0) isLocked = false;
+                    else {
+                        isLocked = !player.completed.story.includes(`chapter-${chap.id}`);
+                    }
+                } else {
+                    isLocked = chap.id > getProgress();
+                }
+
+                const statusClass = isLocked ? 'locked' : '';
+
+                // Click Action
+                let onClick = "";
+                if (!isLocked) {
+                    if (chap.link) onClick = `window.location.href='${chap.link}'`;
+                    else onClick = "alert('Coming soon.')";
+                } else {
+                    // Try to unlock
+                    onClick = `tryUnlock('chapter-${chap.id}')`;
+                }
+
+                return `
+                <div class="chapter-node">
+                    <div class="chapter-card ${statusClass}" data-chapter="chapter-${chap.id}" onclick="${onClick}">
+                        <div class="lock-overlay"><i data-lucide="lock" style="color:var(--cyan-dark); width:32px; height:32px;"></i></div>
+                        <div class="chapter-number">Chapter ${chap.id}</div>
+                        <h3>${chap.title}</h3>
+                        <div class="chapter-desc">${chap.desc}</div>
+                        <div class="chapter-focus">📚 ${chap.focus}</div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function tryUnlock(id) {
+            if (typeof unlockChapter === 'function') {
+                if (confirm("Unlock this chapter for 700 coins?")) {
+                    if (unlockChapter(id)) {
+                        alert("Chapter Unlocked!");
+                        location.reload();
+                    } else {
+                        alert("Not enough coins! You need 700 King Coins.");
+                    }
+                }
+            } else {
+                alert("This chapter is locked.");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', renderMap);
+    </script>
+</body>
+
+</html>

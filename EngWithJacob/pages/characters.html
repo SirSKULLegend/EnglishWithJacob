@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Characters - Silver Kingdom</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/nav_styles.css">
+    <style>
+        /* Character Page Specifics */
+        .subtitle {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .character-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .character-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan-accent);
+        }
+
+        .character-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .character-info {
+            padding: 2rem;
+        }
+
+        .character-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .character-title {
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .character-quote {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-left: 3px solid var(--cyan-accent);
+            margin: 1rem 0;
+            font-style: italic;
+            color: var(--text-main);
+        }
+
+        .character-role {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .role-label {
+            font-weight: 700;
+            color: var(--cyan-accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .role-text {
+            margin-top: 0.5rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: var(--cyan-accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 99px;
+            font-weight: 700;
+            transition: background 0.2s;
+            margin-top: 2rem;
+        }
+
+        .back-btn:hover {
+            background: #22d3ee;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <button class="btn btn-ghost" onclick="toggleTheme()" title="Toggle Theme"
+                style="position: absolute; right: 2rem; top: 2rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 50%; cursor: pointer;">
+                <span id="themeIcon">🌙</span>
+            </button>
+            <h1>The Characters</h1>
+            <p class="subtitle">Meet the souls of Silver Kingdom</p>
+        </header>
+
+        <div class="characters-grid">
+            <!-- King Edric -->
+            <div class="character-card">
+                <img src="../assets/edric.png" alt="King Edric" class="character-image"
+                    onerror="this.src='https://placehold.co/400x400?text=King+Edric'">
+                <div class="character-info">
+                    <h2 class="character-name">King Edric</h2>
+                    <p class="character-title">Ruler of Silverhelm</p>
+                    <div class="character-quote">"Speak clearly. A king listens once."</div>
+                    <div class="character-role">
+                        <div class="role-label">Learning Focus</div>
+                        <div class="role-text">Formal English • Giving Reasons • Persuasion</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Queen Elara (New) -->
+            <div class="character-card">
+                <img src="../assets/queen_portrait.jpg" alt="Queen Elara" class="character-image"
+                    style="object-position: top;" onerror="this.src='https://placehold.co/400x400?text=Queen+Elara'">
+                <div class="character-info">
+                    <h2 class="character-name">Queen Elara</h2>
+                    <p class="character-title">The Late Queen</p>
+                    <div class="character-quote">"Her memory lives in the winter wind."</div>
+                    <div class="character-role">
+                        <div class="role-label">Story Role</div>
+                        <div class="role-text">The beloved wife of King Edric and mother to Lyria. Her tragic loss
+                            changed the kingdom forever.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lyria -->
+            <div class="character-card">
+                <img src="../assets/lyria.jpg" alt="Princess Lyria" class="character-image"
+                    style="object-position: top;" onerror="this.src='https://placehold.co/400x400?text=Princess+Lyria'">
+                <div class="character-info">
+                    <h2 class="character-name">Princess Lyria</h2>
+                    <p class="character-title">The Lost Heir</p>
+                    <div class="character-quote">"Try again. I want to understand."</div>
+                    <div class="character-role">
+                        <div class="role-label">Learning Focus</div>
+                        <div class="role-text">Questions • Emotional Language • Exploration</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Eva -->
+            <div class="character-card">
+                <img src="../assets/eva.jpg" alt="Eva" class="character-image" style="object-position: top;"
+                    onerror="this.src='https://placehold.co/400x400?text=Eva'">
+                <div class="character-info">
+                    <h2 class="character-name">Eva</h2>
+                    <p class="character-title">The Healer</p>
+                    <div class="character-quote">"The fever... it's not ordinary. You are changing."</div>
+                    <div class="character-role">
+                        <div class="role-label">Story Role</div>
+                        <div class="role-text">A mysterious healer who aids Lyria in the mountains. She knows more about
+                            Lyria's power than she reveals.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Queen Marwen -->
+            <div class="character-card">
+                <img src="../assets/marwen.jpg" alt="Queen Marwen" class="character-image"
+                    onerror="this.src='https://placehold.co/400x400?text=Queen+Marwen'">
+                <div class="character-info">
+                    <h2 class="character-name">Queen Marwen</h2>
+                    <p class="character-title">The Shadow Throne</p>
+                    <div class="character-quote">"Words hide more than swords."</div>
+                    <div class="character-role">
+                        <div class="role-label">Learning Focus</div>
+                        <div class="role-text">Subtext • Politeness vs Danger • Indirect Meaning</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gatewarden -->
+            <div class="character-card">
+                <div class="character-image"
+                    style="background: var(--bg-light); display: flex; align-items: center; justify-content: center; font-size: 8rem; color: var(--cyan-accent);">
+                    🛡️</div>
+                <div class="character-info">
+                    <h2 class="character-name">The Gatewarden</h2>
+                    <p class="character-title">Guardian of Amberreach</p>
+                    <div class="character-quote">"Halt! Who approaches the Silver Gates?"</div>
+                    <div class="character-role">
+                        <div class="role-label">Learning Focus</div>
+                        <div class="role-text">Introductions • Basic Requests • Survival English</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <center>
+            <a href="index.html" class="back-btn">← Back to Dashboard</a>
+        </center>
+    </div>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+
+</html>

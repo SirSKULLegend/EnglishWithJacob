@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Notes (Dev Only)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--cyan-accent);
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .char-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .char-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .char-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan-accent);
+        }
+
+        .char-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--cyan-dark);
+            margin-bottom: 1rem;
+            background: #1a1a1a;
+        }
+
+        .char-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .char-role {
+            font-size: 0.9rem;
+            color: var(--cyan-accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .char-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: var(--cyan-accent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Character Database</h1>
+
+        <div class="char-grid">
+            <!-- King Edric -->
+            <div class="char-card">
+                <img src="../assets/edric.png" alt="King Edric" class="char-img">
+                <div class="char-name">King Edric</div>
+                <div class="char-role">Ruler of Silver Kingdom</div>
+                <p class="char-desc">
+                    The grieving king. He lost his wife, Queen Elara, years ago. He is strict, traditional, and values
+                    clarity. He holds the kingdom together but is haunted by the past.
+                </p>
+            </div>
+
+            <!-- Queen Marwen -->
+            <div class="char-card">
+                <img src="../assets/marwen.jpg" alt="Queen Marwen" class="char-img">
+                <div class="char-name">Queen Marwen</div>
+                <div class="char-role">The New Queen / Antagonist</div>
+                <p class="char-desc">
+                    Mysterious and manipulative. She uses the ancient Mirror to spy and control. She seeks to
+                    consolidate power and eliminate threats to her rule.
+                </p>
+            </div>
+
+            <!-- Lyria -->
+            <div class="char-card">
+                <img src="../assets/lyria.jpg" alt="Lyria" class="char-img">
+                <div class="char-name">Lyria</div>
+                <div class="char-role">The Protagonist</div>
+                <p class="char-desc">
+                    A young woman with a mysterious past and dormant magical powers. She is awakening to her destiny and
+                    is hunted by the Queen's forces.
+                </p>
+            </div>
+
+            <!-- Eva -->
+            <div class="char-card">
+                <img src="../assets/eva.jpg" alt="Eva" class="char-img">
+                <div class="char-name">Eva</div>
+                <div class="char-role">Healer & Guide</div>
+                <p class="char-desc">
+                    A wise woman living in the forest. She hides Lyria and helps her understand her powers. She is a
+                    connection to the old ways.
+                </p>
+            </div>
+
+            <!-- Grenn -->
+            <div class="char-card">
+                <img src="../assets/grenn_perfect.png" alt="Grenn" class="char-img">
+                <div class="char-name">Grenn</div>
+                <div class="char-role">Bandit Leader</div>
+                <p class="char-desc">
+                    A dangerous bandit blocking the road. He is well-equipped with black leather armor, a longsword, and
+                    a silver dagger.
+                </p>
+            </div>
+        </div>
+
+        <a href="../index.html" class="back-link">← Return to Dashboard</a>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - EngWithJacob</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/nav_styles.css">
+    <style>
+        /* Leaderboard Specifics */
+        .lb-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.1);
+        }
+
+        .lb-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .lb-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--cyan-dark);
+        }
+
+        .lb-filters {
+            display: inline-flex;
+            justify-content: center;
+            gap: 0.5rem;
+            background: var(--bg-light);
+            padding: 0.25rem;
+            border-radius: 12px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .filter-btn.active {
+            background: var(--bg-card);
+            color: var(--cyan-accent);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .lb-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .lb-item {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+
+        .lb-item:hover {
+            transform: translateX(5px);
+            border-color: var(--cyan-accent);
+        }
+
+        .lb-rank {
+            font-size: 1.25rem;
+            font-weight: 700;
+            width: 40px;
+            color: var(--text-muted);
+        }
+
+        .lb-item.top-1 .lb-rank {
+            color: var(--amber-400);
+        }
+
+        .lb-item.top-2 .lb-rank {
+            color: #94a3b8;
+        }
+
+        .lb-item.top-3 .lb-rank {
+            color: #b45309;
+        }
+
+        .lb-user {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .user-country {
+            font-size: 1.25rem;
+            margin-left: 0.5rem;
+        }
+
+        .lb-xp {
+            font-weight: 700;
+            color: var(--cyan-accent);
+        }
+
+        .me {
+            border-color: var(--cyan-accent);
+            background: var(--bg-light);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🏆</div>
+                <div class="logo-text">
+                    <h1>EngWithJacob</h1>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="../skills/reading.html" class="nav-link nav-skill reading" data-i18n="navReading">Reading</a>
+                <a href="../skills/listening.html" class="nav-link nav-skill listening"
+                    data-i18n="navListening">Listening</a>
+                <a href="../skills/speaking.html" class="nav-link nav-skill speaking"
+                    data-i18n="navSpeaking">Speaking</a>
+                <a href="../skills/writing.html" class="nav-link nav-skill writing" data-i18n="navWriting">Writing</a>
+                <div class="nav-separator"></div>
+                <a href="../index.html" class="nav-link" data-i18n="navHome">Home</a>
+                <a href="leaderboard.html" class="nav-link active" data-i18n="navLeaderboard">Leaderboard</a>
+                <a href="ai-lab.html" class="nav-link" data-i18n="navAILab">AI Lab</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn btn-ghost" onclick="toggleTheme()" title="Toggle Theme" style="font-size: 1.2rem;">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <div class="user-avatar" style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden;">
+                    <a href="profile.html"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jacob" width="32"
+                            height="32" alt="Profile"></a>
+                </div>
+            </div>
+        </header>
+
+        <div class="lb-card">
+            <div class="lb-header">
+                <h1 class="lb-title">Global Rankings</h1>
+                <div class="lb-filters">
+                    <button class="filter-btn active" onclick="setFilter(this, 'daily')">Daily</button>
+                    <button class="filter-btn" onclick="setFilter(this, 'weekly')">Weekly</button>
+                    <button class="filter-btn" onclick="setFilter(this, 'monthly')">Monthly</button>
+                    <button class="filter-btn" onclick="setFilter(this, 'alltime')">All Time</button>
+                </div>
+            </div>
+
+            <div class="lb-list">
+                <!-- Static list for now, could be dynamic -->
+                <div class="lb-item top-1">
+                    <div class="lb-rank">1</div>
+                    <div class="lb-user">
+                        <div class="user-avatar">👑</div>
+                        <span class="user-name">Sarah Johnson</span>
+                        <span class="user-country">🇬🇧</span>
+                    </div>
+                    <div class="lb-xp">1,450 XP</div>
+                </div>
+                <div class="lb-item top-2">
+                    <div class="lb-rank">2</div>
+                    <div class="lb-user">
+                        <div class="user-avatar">⚡</div>
+                        <span class="user-name">Ahmed Khalil</span>
+                        <span class="user-country">🇪🇬</span>
+                    </div>
+                    <div class="lb-xp">1,320 XP</div>
+                </div>
+                <div class="lb-item top-3">
+                    <div class="lb-rank">3</div>
+                    <div class="lb-user">
+                        <div class="user-avatar">🌟</div>
+                        <span class="user-name">Maria Rodriguez</span>
+                        <span class="user-country">🇪🇸</span>
+                    </div>
+                    <div class="lb-xp">1,150 XP</div>
+                </div>
+                <div class="lb-item">
+                    <div class="lb-rank">4</div>
+                    <div class="lb-user">
+                        <div class="user-avatar">👤</div>
+                        <span class="user-name">Chen Wei</span>
+                        <span class="user-country">🇨🇳</span>
+                    </div>
+                    <div class="lb-xp">980 XP</div>
+                </div>
+                <div class="lb-item me">
+                    <div class="lb-rank">14</div>
+                    <div class="lb-user">
+                        <div class="user-avatar">🧙</div>
+                        <span class="user-name">Amina Ali (You)</span>
+                        <span class="user-country">🇸🇦</span>
+                    </div>
+                    <div class="lb-xp">450 XP</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/player.js"></script>
+    <script>
+        const setFilter = (btn, filter) => {
+            document.querySelectorAll(".filter-btn").forEach(e => e.classList.remove("active"));
+            btn.classList.add("active");
+            if (window.playTone) window.playTone(740);
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof player !== 'undefined') {
+                const meItem = document.querySelector('.lb-item.me');
+                if (meItem) {
+                    const leaderboardEntry = {
+                        name: player.id,
+                        xp: player.xp,
+                        tier: player.tier
+                    };
+                    // Update DOM
+                    meItem.querySelector('.user-name').innerText = `${leaderboardEntry.name} (You)`;
+                    meItem.querySelector('.lb-xp').innerText = `${leaderboardEntry.xp} XP`;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

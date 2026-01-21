@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Act I, Scene 2: Audience with the King</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Royal Teal Theme for Edric's Court */
+        :root {
+            --royal-teal: #0d9488;
+            --royal-dark: #115e59;
+        }
+
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Merriweather', serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .game-frame {
+            width: 100%;
+            max-width: 900px;
+            background: var(--bg-card);
+            border: 4px double var(--royal-teal);
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(13, 148, 136, 0.2);
+            overflow: hidden;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: 600px;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--royal-teal);
+            background: linear-gradient(180deg, rgba(13, 148, 136, 0.1) 0%, transparent 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--royal-teal);
+            font-size: 1.5rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .scene-stage {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .character-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .avatar-frame {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--royal-teal);
+            overflow: hidden;
+            background: var(--bg-body);
+            box-shadow: 0 0 20px rgba(13, 148, 136, 0.3);
+        }
+
+        .avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .dialogue-box {
+            background: var(--bg-card);
+            border: 1px solid var(--royal-teal);
+            padding: 1.5rem;
+            border-radius: 8px;
+            max-width: 600px;
+            text-align: center;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            font-style: italic;
+            position: relative;
+            color: var(--text-main);
+        }
+
+        .dialogue-box::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid var(--royal-teal);
+        }
+
+        .narrative-text {
+            color: var(--text-muted);
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .player-action-area {
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            background: var(--bg-light);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .hint {
+            font-size: 0.9rem;
+            color: var(--royal-teal);
+            background: rgba(13, 148, 136, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .input-group {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            gap: 0.5rem;
+        }
+
+        input {
+            flex: 1;
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-main);
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--royal-teal);
+        }
+
+        button {
+            padding: 0 2rem;
+            background: var(--royal-teal);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: var(--royal-dark);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-frame">
+        <header>
+            <a href="../story-map.html" style="text-decoration:none; color:var(--royal-teal); font-weight:700;">←
+                Map</a>
+            <h1>Silver Kingdom</h1>
+            <button onclick="toggleTheme()" title="Toggle Theme"
+                style="background:transparent; padding:0; min-width:auto; color:var(--text-main);">
+                🌙
+            </button>
+        </header>
+
+        <div class="scene-stage" id="stage">
+            <p class="narrative-text" id="narrative">
+                The throne room is vast. Sunlight streams through stained glass, painting the stone floor in amber and
+                teal. King Edric sits upon the Silver Throne.
+            </p>
+
+            <div class="character-card" id="npcContainer">
+                <div class="avatar-frame">
+                    <img src="../assets/edric.png" alt="King Edric">
+                </div>
+                <h3 style="font-family:'Cinzel', serif; margin:0.5rem 0; color:var(--royal-teal);">King Edric</h3>
+                <div class="dialogue-box" id="npcDialogue">
+                    "So. A traveler has entered my kingdom. Tell me—what is your purpose here?"
+                </div>
+            </div>
+        </div>
+
+        <div class="player-action-area">
+            <p id="hint" class="hint">The King values clarity. Speak your true reason.</p>
+            <div class="input-group">
+                <input type="text" id="playerInput" placeholder="Speak your answer..." autocomplete="off">
+                <button onclick="handleAction()">Speak</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const state = { step: 0 };
+        const steps = [
+            {
+                npc: "So. A traveler has entered my kingdom. Tell me—what is your purpose here?",
+                keywords: ["learn", "english", "study", "improve", "language", "education", "knowledge", "visit"],
+                nextSuccess: 1,
+                nextFail: 0,
+                failResponse: "That is vague. I need a clear reason. Why have you come?"
+            },
+            {
+                npc: "Learning, you say? Words are power. But learning requires discipline. Are you prepared to commit?",
+                keywords: ["yes", "i am", "ready", "prepared", "committed", "sure", "promise"],
+                nextSuccess: 2,
+                nextFail: 1,
+                failResponse: "I sense hesitation. Are you truly prepared?"
+            },
+            {
+                npc: "Good. Then you will address me properly. How does one speak to a king?",
+                keywords: ["majesty", "highness", "lord", "sire", "king"],
+                nextSuccess: 3,
+                nextFail: 2,
+                failResponse: "That is not fitting. Try again."
+            },
+            {
+                npc: "Well spoken. You may stay in Silver Kingdom and learn. Speak clearly, and you will be heard.",
+                keywords: [],
+                isEnd: true
+            }
+        ];
+
+        function handleAction() {
+            const input = document.getElementById('playerInput');
+            const userText = input.value.trim().toLowerCase();
+            if (!userText) return;
+
+            const current = steps[state.step];
+
+            // EDGE CASE FIX: If keywords empty (auto-success logic for safety)
+            if (!current.keywords || current.keywords.length === 0) {
+                if (current.nextSuccess !== undefined) {
+                    state.step = current.nextSuccess;
+                    updateScene();
+                }
+                return;
+            }
+
+            const success = current.keywords.some(k => userText.includes(k));
+
+            if (success) {
+                state.step = current.nextSuccess;
+                updateScene();
+            } else {
+                updateDialogue(current.failResponse);
+                document.getElementById('hint').style.display = 'block';
+            }
+            input.value = '';
+        }
+
+        function updateScene() {
+            const scene = steps[state.step];
+            document.getElementById('hint').style.display = 'none';
+
+            if (scene.isEnd) {
+                updateDialogue(scene.npc);
+                // End of scene, link back to map
+                document.querySelector('.input-group').innerHTML =
+                    '<button onclick="window.location.href=\'../story-map.html\'" style="width:100%">Return to Map</button>';
+            } else {
+                updateDialogue(scene.npc);
+            }
+        }
+
+        function updateDialogue(text) {
+            const box = document.getElementById('npcDialogue');
+            box.style.opacity = '0';
+            setTimeout(() => {
+                box.textContent = `"${text}"`;
+                box.style.opacity = '1';
+            }, 300);
+        }
+
+        document.getElementById('playerInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleAction();
+        });
+    </script>
+</body>
+
+</html>

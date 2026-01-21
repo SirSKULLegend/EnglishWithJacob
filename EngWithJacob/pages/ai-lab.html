@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Lab - EngWithJacob</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/nav_styles.css">
+    <style>
+        /* Specific Styles for AI Lab */
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(6, 182, 212, 0.05);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan-accent);
+            box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.2);
+        }
+
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            background: var(--bg-light);
+            width: 64px;
+            height: 64px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            color: var(--cyan-accent);
+        }
+
+        .tool-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .tool-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .launch-btn {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--cyan-accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge-new {
+            background: var(--cyan-accent);
+            color: var(--bg-card);
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 99px;
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🤖</div>
+                <div class="logo-text">
+                    <h1>AI Lab</h1>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="../skills/reading.html" class="nav-link nav-skill reading" data-i18n="navReading">Reading</a>
+                <a href="../skills/listening.html" class="nav-link nav-skill listening"
+                    data-i18n="navListening">Listening</a>
+                <a href="../skills/speaking.html" class="nav-link nav-skill speaking"
+                    data-i18n="navSpeaking">Speaking</a>
+                <a href="../skills/writing.html" class="nav-link nav-skill writing" data-i18n="navWriting">Writing</a>
+                <div class="nav-separator"></div>
+                <a href="../index.html" class="nav-link" data-i18n="navHome">Home</a>
+                <a href="leaderboard.html" class="nav-link" data-i18n="navLeaderboard">Leaderboard</a>
+                <a href="ai-lab.html" class="nav-link active" data-i18n="navAILab">AI Lab</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn btn-ghost" onclick="toggleTheme()" title="Toggle Theme" style="font-size: 1.2rem;">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <a href="profile.html"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jacob"
+                        class="header-avatar"></a>
+            </div>
+        </header>
+
+        <div style="text-align:center; margin-bottom: 3rem;">
+            <h1 style="font-size:2.5rem; margin-bottom:1rem; color:var(--cyan-dark);">Experimental Tools</h1>
+            <p style="color:var(--text-muted);">Powered by advanced AI models to accelerate your learning.</p>
+        </div>
+
+        <div class="lab-grid">
+            <div class="tool-card" onclick="window.location.href='../skills/writing.html'">
+                <div class="tool-icon">✍️</div>
+                <div class="badge-new">Updated</div>
+                <h3 class="tool-title" data-i18n="actWrite">Writing Buddy</h3>
+                <p class="tool-desc">Get instant stylistic and grammatical feedback on your essays and emails.</p>
+                <div class="launch-btn">Launch Tool →</div>
+            </div>
+
+            <div class="tool-card" onclick="alert('Magic Stories is currently in development. Check back soon!');">
+                <div class="tool-icon">✨</div>
+                <div class="badge-new">Beta</div>
+                <h3 class="tool-title">Magic Stories</h3>
+                <p class="tool-desc">Generate personalized stories based on your vocabulary list and interests.</p>
+                <div class="launch-btn">Coming Soon</div>
+            </div>
+
+            <div class="tool-card" onclick="alert('Visual Vocabulary is currently in development. Check back soon!');">
+                <div class="tool-icon">👁️</div>
+                <h3 class="tool-title">Visual Vocabulary</h3>
+                <p class="tool-desc">AI generates images to help you remember abstract concepts and words.</p>
+                <div class="launch-btn">Coming Soon</div>
+            </div>
+
+            <div class="tool-card" onclick="alert('Smart Translate is currently in development.')">
+                <div class="tool-icon">🔄</div>
+                <h3 class="tool-title">Smart Translate</h3>
+                <p class="tool-desc">Context-aware translation that explains nuance and idioms.</p>
+                <div class="launch-btn">Coming Soon</div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+
+</html>

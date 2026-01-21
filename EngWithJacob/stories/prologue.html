@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prologue: The Golden Days</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Override global body for specific layout if needed, but rely on style.css for colors */
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .game-frame {
+            width: 100%;
+            max-width: 800px;
+            background: var(--bg-card);
+            border: 2px solid var(--cyan-accent);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.15);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+
+        header {
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--cyan-accent);
+            margin: 0;
+            font-size: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .scene-stage {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            gap: 1.5rem;
+            background: radial-gradient(circle at center, var(--bg-card) 0%, var(--bg-light) 100%);
+        }
+
+        .memory-frame {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 3px solid var(--border-color);
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.2);
+            position: relative;
+        }
+
+        .memory-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: opacity 0.5s ease;
+            animation: panZoom 20s infinite alternate ease-in-out;
+            transform-origin: center center;
+        }
+
+        @keyframes panZoom {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+
+            100% {
+                transform: scale(1.15) translate(-2%, -2%);
+            }
+        }
+
+        .memory-frame::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .narrative-box {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--bg-light);
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(6, 182, 212, 0.05);
+        }
+
+        .narrative-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .verb-highlight {
+            color: var(--aqua-bright);
+            font-weight: 700;
+            border-bottom: 2px solid var(--bg-light);
+        }
+
+        .controls-area {
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .option-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--cyan-accent);
+            padding: 1rem;
+            border-radius: 12px;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .option-btn:hover {
+            background: var(--cyan-accent);
+            color: white;
+        }
+
+        .next-btn {
+            background: var(--cyan-accent);
+            color: white;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .grammar-tip {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background: var(--bg-light);
+            padding: 0.5rem;
+            border-radius: 8px;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .hover-word {
+            position: relative;
+            cursor: help;
+            border-bottom: 2px dotted var(--aqua-bright);
+            font-weight: 600;
+        }
+
+        .hover-word:hover::after {
+            content: attr(data-ar);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-dark);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hover-word:hover::before {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--text-dark) transparent transparent transparent;
+        }
+
+        .option-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--cyan-accent);
+            padding: 1rem;
+            border-radius: 12px;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        .option-btn:hover {
+            background: var(--cyan-accent);
+            color: white;
+            border-color: var(--cyan-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(6, 182, 212, 0.15);
+        }
+
+        .option-btn .translation {
+            display: block;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            font-weight: 400;
+        }
+
+        .option-btn:hover .translation {
+            opacity: 1;
+            color: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-frame">
+        <header>
+            <a href="../story-map.html" style="text-decoration:none; color:var(--text-muted); font-weight:600;">← Back
+                to Map</a>
+            <h1>Prologue: The Golden Days</h1>
+            <div style="width:100px;"></div>
+        </header>
+
+        <div class="scene-stage">
+            <div class="grammar-tip" style="margin-bottom: 1rem;">
+                <div>🎯 Goal: Past Simple Tense (Actions in the past)</div>
+                <div style="font-size:0.9em; opacity:0.8;">الهدف: الماضي البسيط (أفعال في الماضي)</div>
+            </div>
+            <div class="memory-frame">
+                <img id="memoryImage" src="" alt="Memory">
+            </div>
+
+            <div class="narrative-box">
+                <p class="narrative-text" id="narrative"></p>
+            </div>
+        </div>
+
+        <div class="controls-area">
+            <div class="options-grid" id="options"></div>
+            <button class="next-btn" id="nextBtn" onclick="nextStep()">Next Memory →</button>
+        </div>
+    </div>
+
+    <script>
+        const scenes = [
+            {
+                text: "This <span class='verb-highlight hover-word' data-ar='كانت'>was</span> Queen Elara. She <span class='verb-highlight hover-word' data-ar='كانت'>was</span> kind and <span class='hover-word' data-ar='جميلة'>beautiful</span>.",
+                img: "../assets/queen_portrait.jpg",
+                question: "Who was she?",
+                options: [
+                    { text: "She was the Queen.", arabic: "كانت الملكة", correct: true },
+                    { text: "She is the Queen.", arabic: "هي الملكة", correct: false }
+                ]
+            },
+            {
+                text: "King Edric <span class='verb-highlight hover-word' data-ar='أحب'>loved</span> her with all his <span class='hover-word' data-ar='قلب'>heart</span>.",
+                img: "../assets/flashback_portrait.jpg",
+                question: "Did he love her?",
+                options: [
+                    { text: "Yes, he loved her.", arabic: "نعم، أحبها", correct: true },
+                    { text: "Yes, he love her.", arabic: "نعم، يحبها", correct: false }
+                ]
+            },
+            {
+                text: "They <span class='verb-highlight hover-word' data-ar='حكما'>ruled</span> the kingdom together in <span class='hover-word' data-ar='سلام'>peace</span>.",
+                img: "../assets/flashback_king_queen_halo.jpg",
+                question: "What did they do?",
+                options: [
+                    { text: "They ruled together.", arabic: "حكما معاً", correct: true },
+                    { text: "They rule together.", arabic: "يحكمان معاً", correct: false }
+                ]
+            },
+            {
+                text: "They <span class='verb-highlight hover-word' data-ar='مشيا'>walked</span> in the royal <span class='hover-word' data-ar='حدائق'>gardens</span> every morning.",
+                img: "../assets/flashback_garden.jpg",
+                question: "Where did they walk?",
+                options: [
+                    { text: "In the gardens.", arabic: "في الحدائق", correct: true },
+                    { text: "In the castle.", arabic: "في القلعة", correct: false }
+                ]
+            },
+            {
+                text: "At night, they <span class='verb-highlight hover-word' data-ar='رقصا'>danced</span> in the <span class='hover-word' data-ar='ضوء القمر'>moonlight</span>.",
+                img: "../assets/flashback_dance.jpg",
+                question: "Complete: They ___.",
+                options: [
+                    { text: "danced", arabic: "رقصا", correct: true },
+                    { text: "dancing", arabic: "يرقصون", correct: false }
+                ]
+            },
+            {
+                text: "Then, a princess <span class='verb-highlight hover-word' data-ar='ولدت'>was born</span>. They <span class='verb-highlight hover-word' data-ar='كانوا'>were</span> a <span class='hover-word' data-ar='عائلة'>family</span>.",
+                img: "../assets/flashback_queen_baby_halo.jpg",
+                question: "Who was born?",
+                options: [
+                    { text: "A princess.", arabic: "أميرة", correct: true },
+                    { text: "A prince.", arabic: "أمير", correct: false }
+                ]
+            },
+            {
+                text: "But winter <span class='verb-highlight hover-word' data-ar='جاء'>came</span>. Now, she is <span class='hover-word' data-ar='رحلت'>gone</span>.",
+                img: "../assets/flashback_wife_side.jpg",
+                question: "Is she here now?",
+                options: [
+                    { text: "No, she is gone.", arabic: "لا، رحلت", correct: true },
+                    { text: "Yes, she is here.", arabic: "نعم، هي هنا", correct: false }
+                ]
+            },
+            {
+                text: "The King only <span class='verb-highlight hover-word' data-ar='يتذكر'>remembers</span>.",
+                img: "../assets/edric.png",
+                question: "The memory ends.",
+                options: [
+                    { text: "Finish Prologue", arabic: "إنهاء المقدمة", correct: true }
+                ]
+            }
+        ];
+
+        let currentScene = 0;
+
+        function loadScene(index) {
+            const scene = scenes[index];
+            const img = document.getElementById('memoryImage');
+            img.style.opacity = 0;
+            setTimeout(() => {
+                img.src = scene.img;
+                img.onload = () => { img.style.opacity = 1; };
+            }, 200);
+
+            const narrEl = document.getElementById('narrative');
+            narrEl.innerHTML = scene.text;
+            speak(narrEl.innerText);
+
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+
+            document.getElementById('nextBtn').style.display = 'none';
+
+            scene.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `${opt.text}<div class="translation">${opt.arabic}</div>`;
+                btn.onclick = () => checkAnswer(opt.correct, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(isCorrect, btn) {
+            if (isCorrect) {
+                btn.style.background = 'var(--cyan-accent)';
+                btn.style.color = 'white';
+                document.getElementById('nextBtn').style.display = 'block';
+                const all = document.querySelectorAll('.option-btn');
+                all.forEach(b => b.disabled = true);
+            } else {
+                btn.style.background = 'rgba(239, 68, 68, 0.2)'; // Dark mode friendly error
+                btn.style.borderColor = '#ef4444';
+                const originalText = btn.innerText;
+                btn.innerText = "Try Again";
+                setTimeout(() => {
+                    btn.style.background = 'var(--bg-card)';
+                    btn.style.borderColor = 'var(--cyan-accent)';
+                    btn.innerText = originalText;
+                }, 1000);
+            }
+        }
+
+        function nextStep() {
+            currentScene++;
+            if (currentScene < scenes.length) {
+                loadScene(currentScene);
+            } else {
+                localStorage.setItem('silverKingdom_progress', 1);
+                window.location.href = '../story-map.html';
+            }
+        }
+
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.rate = 0.9;
+            u.lang = 'en-US';
+            window.speechSynthesis.speak(u);
+        }
+
+        window.onload = () => loadScene(0);
+    </script>
+    <script src="../js/app.js"></script>
+</body>
+
+</html>

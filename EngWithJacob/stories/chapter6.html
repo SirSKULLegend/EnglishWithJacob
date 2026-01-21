@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 6: Moonbrook's Gate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .game-frame {
+            width: 100%;
+            max-width: 800px;
+            background: var(--bg-card);
+            border: 2px solid var(--cyan-accent);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.15);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+
+        header {
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-card);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--cyan-accent);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .scene-stage {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            gap: 2rem;
+            background: radial-gradient(circle at center, var(--bg-card) 0%, var(--bg-light) 100%);
+        }
+
+        .narrative-text {
+            color: var(--text-main);
+            text-align: center;
+            line-height: 1.7;
+            max-width: 600px;
+            font-style: italic;
+            font-size: 1.05rem;
+            opacity: 0.85;
+        }
+
+        .dialogue-box {
+            background: var(--bg-card);
+            border: 1px solid var(--cyan-accent);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 600px;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            position: relative;
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.05);
+            margin-bottom: 1.25rem;
+        }
+
+        .controls-area {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .grammar-tip {
+            text-align: center;
+            color: var(--cyan-accent);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .option-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--cyan-accent);
+            padding: 1rem;
+            border-radius: 12px;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        .option-btn:hover {
+            background: var(--cyan-accent);
+            color: white;
+            border-color: var(--cyan-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(6, 182, 212, 0.15);
+        }
+
+        .option-btn .translation {
+            display: block;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            font-weight: 400;
+        }
+
+        .option-btn:hover .translation {
+            opacity: 1;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .next-btn {
+            background: var(--cyan-accent);
+            color: white;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+            display: none;
+            transition: background 0.2s;
+        }
+
+        .next-btn:hover {
+            background: var(--cyan-dark);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-frame">
+        <header>
+            <a href="../story-map.html" style="text-decoration:none; color:var(--text-muted); font-weight:600;">←
+                Map</a>
+            <h1>Chapter 6: Moonbrook's Gate</h1>
+            <div style="width:50px;"></div>
+        </header>
+
+        <div class="scene-stage">
+            <div class="grammar-tip" id="grammarTip">🎯 Goal: Making Requests</div>
+
+            <p class="narrative-text">
+                The ancient forest looms ahead. A guard stands at the overgrown gate of Moonbrook.
+            </p>
+
+            <div style="text-align:center;">
+                <div style="font-size:4rem; margin-bottom:1rem;">💂‍♂️</div>
+                <div class="dialogue-box" id="npcDialogue">Halt! The forest is closed. State your business.</div>
+            </div>
+        </div>
+
+        <div class="controls-area">
+            <div class="options-grid" id="optionsContainer"></div>
+            <button class="next-btn" id="nextBtn" onclick="nextStep()">Next →</button>
+            <button class="next-btn" id="finishBtn" onclick="finishChapter()" style="display:none;">Enter
+                Forest</button>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const sceneState = { step: 0, locked: false };
+        const steps = [
+            {
+                npc: "Halt! The forest is closed. State your business.",
+                tip: "🎯 Goal: Making Requests",
+                tipAr: "الهدف: تقديم الطلبات",
+                options: [
+                    { text: "Can I enter, please?", arabic: "هل يمكنني الدخول من فضلك؟", next: 1 },
+                    { text: "Open the gate!", arabic: "افتح البوابة!", next: 1 },
+                    { text: "I need sanctuary.", arabic: "أحتاج إلى ملاذ.", next: 1 }
+                ]
+            },
+            {
+                npc: "A sanctuary? We have little food. Why should I let you in?",
+                tip: "🎯 Goal: Persuasion (May/Could)",
+                tipAr: "الهدف: الإقناع",
+                options: [
+                    { text: "I could help you.", arabic: "يمكنني مساعدتك.", next: 2 },
+                    { text: "May I speak to your leader?", arabic: "هل لي أن أتحدث إلى قائدك؟", next: 2 },
+                    { text: "I have gold.", arabic: "لدي ذهب.", next: 2 }
+                ]
+            },
+            {
+                npc: "Hmm. You seem honest. You may pass, but beware the wolves.",
+                tip: "🎯 Goal: Gratitude",
+                tipAr: "الهدف: الامتنان",
+                options: [
+                    { text: "Thank you for your kindness.", arabic: "شكراً للطفك.", end: true },
+                    { text: "I will be careful.", arabic: "سأكون حذراً.", end: true }
+                ]
+            }
+        ];
+
+        // Mute Hint
+        if (!localStorage.getItem('voiceHintShown')) {
+            console.log("🔈 You can mute voice in settings");
+            localStorage.setItem('voiceHintShown', '1');
+        }
+
+        function safeSpeak(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.rate = 0.9;
+            u.lang = 'en-US';
+            window.speechSynthesis.speak(u);
+        }
+
+        function renderStep() {
+            sceneState.locked = false;
+            const current = steps[sceneState.step];
+
+            const dia = document.getElementById('npcDialogue');
+            dia.innerText = current.npc;
+            dia.style.marginBottom = '1.25rem';
+
+            const tipEl = document.getElementById('grammarTip');
+            if (tipEl) {
+                tipEl.innerHTML = `
+                    <div>${current.tip || ''}</div>
+                    <div style="font-size:0.9em; opacity:0.8;">${current.tipAr || ''}</div>
+                    <div style="font-size:0.8rem; opacity:0.6; margin-top:0.25rem;">Choose the most natural response</div>
+                `;
+            }
+
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+
+            current.options.forEach(opt => {
+                const btn = document.createElement('div');
+                btn.className = 'option-btn';
+                btn.innerHTML = `${opt.text}<div class="translation">${opt.arabic}</div>`;
+                btn.onclick = () => handleChoice(opt);
+                btn.onmouseenter = () => { };
+                container.appendChild(btn);
+            });
+
+            if (sceneState.step === 0 || sceneState.step % 2 === 0) {
+                safeSpeak(current.npc);
+            }
+
+            setTimeout(() => {
+                container.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 100);
+        }
+
+        let pendingNext = null;
+
+        function handleChoice(opt) {
+            if (sceneState.locked) return;
+            sceneState.locked = true;
+
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(b => {
+                b.style.pointerEvents = 'none';
+                b.style.cursor = 'default';
+                b.onclick = null;
+                if (b.innerText.includes(opt.text)) {
+                    b.style.background = 'var(--cyan-accent)';
+                    b.style.color = 'white';
+                } else {
+                    b.style.opacity = '0.5';
+                }
+            });
+
+            // Micro-feedback
+            const feedback = document.createElement('div');
+            feedback.textContent = "✔ Good choice";
+            feedback.style.cssText = "margin-top:0.75rem; text-align:center; color:var(--cyan-accent); font-weight:600; animation:fadeIn 0.3s ease;";
+            document.getElementById('optionsContainer').appendChild(feedback);
+
+            if (opt.end) {
+                const finish = document.getElementById('finishBtn');
+                finish.style.display = 'block';
+                return;
+            }
+
+            pendingNext = opt.next;
+            setTimeout(() => {
+                document.getElementById('nextBtn').style.display = 'block';
+            }, 400);
+        }
+
+        function nextStep() {
+            if (pendingNext === null) return;
+            sceneState.step = pendingNext;
+            pendingNext = null;
+            renderStep();
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+
+        function finishChapter() {
+            // Unlock next chapter (7)
+            const current = parseInt(localStorage.getItem('silverKingdom_progress')) || 1;
+            if (current < 7) localStorage.setItem('silverKingdom_progress', 7);
+
+            document.body.style.transition = "opacity 0.3s";
+            document.body.style.opacity = '0.6';
+            setTimeout(() => {
+                window.location.href = '../story-map.html';
+            }, 300);
+        }
+
+        renderStep();
+    </script>
+</body>
+
+</html>

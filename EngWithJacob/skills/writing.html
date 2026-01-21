@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="pageTitle">Writing Lab - EngWithJacob</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/nav_styles.css">
+    <style>
+        /* Specific Styles */
+        .editor-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1.1rem;
+            resize: none;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            border-color: var(--cyan-accent);
+        }
+
+        .editor-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .char-count {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .submit-btn {
+            background: var(--cyan-accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .submit-btn:hover {
+            background: var(--cyan-dark);
+            transform: translateY(-1px);
+        }
+
+        .feedback-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border: 1px dashed var(--cyan-accent);
+            border-radius: 16px;
+            display: none;
+        }
+
+        .feedback-box.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">✍️</div>
+                <div class="logo-text">
+                    <h1 data-i18n="logoTitle">EngWithJacob</h1>
+                    <p data-i18n="pageName">Writing Lab</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="reading.html" class="nav-link nav-skill reading" data-i18n="navReading">Reading</a>
+                <a href="listening.html" class="nav-link nav-skill listening" data-i18n="navListening">Listening</a>
+                <a href="speaking.html" class="nav-link nav-skill speaking" data-i18n="navSpeaking">Speaking</a>
+                <a href="writing.html" class="nav-link nav-skill writing active" data-i18n="navWriting">Writing</a>
+                <div class="nav-separator"></div>
+                <a href="../index.html" class="nav-link" data-i18n="navHome">Home</a>
+                <a href="../pages/leaderboard.html" class="nav-link" data-i18n="navLeaderboard">Leaderboard</a>
+                <a href="../pages/ai-lab.html" class="nav-link" data-i18n="navAILab">AI Lab</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn btn-ghost" onclick="toggleTheme()" title="Toggle Theme" style="font-size: 1.2rem;">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <div class="user-avatar" style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden;">
+                    <a href="../pages/profile.html"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jacob"
+                            width="32" height="32" alt="Profile"></a>
+                </div>
+            </div>
+        </header>
+
+        <div class="editor-card">
+            <h2 style="margin-bottom: 1rem; color: var(--text-main);" data-i18n="promptTitle">Topic: My Dream Vacation
+            </h2>
+            <textarea id="textInput" placeholder="Write about your dream vacation here..."
+                oninput="updateCount()"></textarea>
+
+            <div class="editor-footer">
+                <span class="char-count"><span id="count">0</span> <span data-i18n="chars">characters</span></span>
+                <button class="submit-btn" onclick="getFeedback()" data-i18n="submitBtn">Get AI Feedback</button>
+            </div>
+
+            <div class="feedback-box" id="feedback">
+                <h3 style="color: var(--cyan-accent); margin-bottom: 0.5rem;" data-i18n="feedbackTitle">Jacob's Feedback
+                </h3>
+                <p data-i18n="feedbackContent" style="color: var(--text-main);">Great start! Try using more descriptive
+                    adjectives like "breathtaking" or "serene" to describe the scenery. Your grammar is solid.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/player.js"></script>
+    <script>
+        let localState = { lang: 'en' };
+        const pageStrings = {
+            en: {
+                pageName: "Writing Lab",
+                promptTitle: "Topic: My Dream Vacation",
+                chars: "characters", submitBtn: "Get AI Feedback",
+                feedbackTitle: "Jacob's Feedback",
+                feedbackContent: 'Great start! Try using more descriptive adjectives like "breathtaking" or "serene" to describe the scenery. Your grammar is solid.',
+                placeholder: "Write about your dream vacation here..."
+            },
+            ar: {
+                pageName: "مختبر الكتابة",
+                promptTitle: "الموضوع: عطلة أحلامي",
+                chars: "حرف", submitBtn: "احصل على تقييم الذكاء الاصطناعي",
+                feedbackTitle: "ملاحظات يعقوب",
+                feedbackContent: 'بداية رائعة! حاول استخدام صفات وصفية أكثر مثل "خلاب" أو "هادئ" لوصف المناظر الطبيعية. قواعدك النحوية قوية.',
+                placeholder: "اكتب عن عطلة أحلامك هنا..."
+            }
+        };
+
+        function updateCount() {
+            const len = document.getElementById('textInput').value.length;
+            document.getElementById('count').textContent = len;
+        }
+
+        function getFeedback() {
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('show');
+            setTimeout(() => feedback.classList.add('show'), 100);
+
+            // Reward Logic
+            if (typeof player !== 'undefined' && !player.completed.writing.includes("writing-1")) {
+                reward({ coins: 60, xp: 30 });
+                player.completed.writing.push("writing-1");
+                savePlayer(player);
+                const fbTitle = document.querySelector('[data-i18n="feedbackTitle"]');
+                if (fbTitle) fbTitle.innerHTML += " <span style='font-size:0.8em; color:var(--text-muted);'>(+60 Coins, +30 XP)</span>";
+            }
+        }
+
+        // Hook into the global updateContent to apply local translations too
+        const originalUpdateContent = window.updateContent || function () { };
+        window.updateContent = function () {
+            if (originalUpdateContent) originalUpdateContent();
+            // Apply local strings
+            const currentLang = state.lang || 'en'; // state comes from app.js
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (pageStrings[currentLang] && pageStrings[currentLang][key]) {
+                    el.textContent = pageStrings[currentLang][key];
+                }
+            });
+            const input = document.getElementById('textInput');
+            if (input && pageStrings[currentLang] && pageStrings[currentLang].placeholder) {
+                input.placeholder = pageStrings[currentLang].placeholder;
+            }
+        };
+    </script>
+</body>
+
+</html>

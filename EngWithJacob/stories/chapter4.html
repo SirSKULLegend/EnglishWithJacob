@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chapter 4: Whispers in the Pines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .game-frame {
+            width: 100%;
+            max-width: 800px;
+            background: var(--bg-card);
+            border: 2px solid var(--cyan-accent);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+
+        header {
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--cyan-accent);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .scene-stage {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            gap: 2rem;
+            background: radial-gradient(circle at center, var(--bg-card) 0%, var(--bg-light) 100%);
+        }
+
+        .dialogue-box {
+            background: var(--bg-card);
+            border: 1px solid var(--cyan-accent);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 600px;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .controls-area {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .option-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--cyan-accent);
+            padding: 1rem;
+            border-radius: 12px;
+            color: var(--text-main);
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-btn:hover {
+            background: var(--cyan-accent);
+            color: white;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .next-btn {
+            background: var(--cyan-accent);
+            color: white;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-frame">
+        <header>
+            <a href="../story-map.html" style="text-decoration:none; color:var(--text-muted);">← Map</a>
+            <h1>Chapter 4: Whispers</h1>
+            <div></div>
+        </header>
+
+        <div class="scene-stage">
+            <div id="grammarTip" style="color:var(--cyan-accent); font-weight:700; text-align:center;">🎯 Goal:
+                Apologies</div>
+            <p style="text-align:center; opacity:0.8; margin-top:1rem;">The forest is quiet. Eva looks at you with
+                concern.</p>
+            <div style="text-align:center;">
+                <div style="font-size:4rem; margin-bottom:1rem;">🧝‍♀️</div>
+                <div class="dialogue-box" id="npcDialogue">You used magic, Lyria. Are you alright?</div>
+            </div>
+        </div>
+
+        <div class="controls-area">
+            <div class="options-grid" id="optionsContainer"></div>
+            <button class="next-btn" id="nextBtn" onclick="nextStep()">Next →</button>
+            <button class="next-btn" id="finishBtn" onclick="finishChapter()" style="display:none;">Take the
+                Charm</button>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const sceneState = { step: 0, locked: false };
+        const steps = [
+            {
+                npc: "You used magic, Lyria. That light... it was dangerous.",
+                tip: "🎯 Goal: Apologizing",
+                tipAr: "الهدف: الاعتذار",
+                options: [
+                    { text: "I am sorry.", arabic: "أنا آسفة.", next: 1 },
+                    { text: "I didn't mean to.", arabic: "لم أقصد ذلك.", next: 1 },
+                    { text: "It just happened.", arabic: "لقد حدث ذلك فقط.", next: 1 }
+                ]
+            },
+            {
+                npc: "It is not your fault. But you must learn to control it. Take this.",
+                tip: "🎯 Goal: Acceptance",
+                tipAr: "الهدف: القبول",
+                options: [
+                    { text: "What is it?", arabic: "ما هذا؟", next: 2 },
+                    { text: "Is it magical?", arabic: "هل هو سحري؟", next: 2 }
+                ]
+            },
+            {
+                npc: "It was your mother's amulet. It will hide your power from Marwen's mirrors.",
+                tip: "🎯 Goal: Gratitude",
+                tipAr: "الهدف: الشكر",
+                options: [
+                    { text: "Thank you, Eva.", arabic: "شكراً يا إيفا.", end: true },
+                    { text: "I will wear it.", arabic: "سأرتديها.", end: true }
+                ]
+            }
+        ];
+
+        // Standard helpers
+        if (!localStorage.getItem('voiceHintShown')) localStorage.setItem('voiceHintShown', '1');
+        function safeSpeak(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text); u.rate = 0.9; window.speechSynthesis.speak(u);
+        }
+
+        function renderStep() {
+            sceneState.locked = false;
+            const current = steps[sceneState.step];
+            document.getElementById('npcDialogue').innerText = current.npc;
+            document.getElementById('grammarTip').innerHTML = `<div>${current.tip}</div><div style="font-size:0.8em; opacity:0.7">${current.tipAr}</div>`;
+            const container = document.getElementById('optionsContainer'); container.innerHTML = '';
+
+            current.options.forEach(opt => {
+                const btn = document.createElement('div'); btn.className = 'option-btn';
+                btn.innerHTML = `${opt.text}<div style="font-size:0.8em; opacity:0.7">${opt.arabic}</div>`;
+                btn.onclick = () => handleChoice(opt);
+                container.appendChild(btn);
+            });
+
+            if (sceneState.step % 2 === 0) safeSpeak(current.npc);
+        }
+
+        let pendingNext = null;
+        function handleChoice(opt) {
+            if (sceneState.locked) return; sceneState.locked = true;
+            document.querySelectorAll('.option-btn').forEach(b => {
+                b.style.pointerEvents = 'none';
+                if (b.innerText.includes(opt.text)) { b.style.background = 'var(--cyan-accent)'; b.style.color = 'white'; }
+                else b.style.opacity = '0.5';
+            });
+            const fb = document.createElement('div'); fb.innerText = '✔ Good'; fb.style.cssText = 'text-align:center; margin-top:0.5rem; color:var(--cyan-accent); animation:fadeIn 0.3s';
+            document.getElementById('optionsContainer').appendChild(fb);
+
+            if (opt.end) { document.getElementById('finishBtn').style.display = 'block'; return; }
+            pendingNext = opt.next;
+            setTimeout(() => document.getElementById('nextBtn').style.display = 'block', 400);
+        }
+
+        function nextStep() {
+            if (pendingNext === null) return; sceneState.step = pendingNext; pendingNext = null; renderStep();
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+
+        function finishChapter() {
+            const current = parseInt(localStorage.getItem('silverKingdom_progress')) || 1;
+            if (current < 5) localStorage.setItem('silverKingdom_progress', 5); // Unlocks Chapter 5 (Mirror)
+            document.body.style.opacity = '0.5';
+            setTimeout(() => window.location.href = '../story-map.html', 300);
+        }
+
+        renderStep();
+    </script>
+</body>
+
+</html>
